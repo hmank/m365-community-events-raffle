@@ -74,41 +74,46 @@ ol,ul{margin:0;padding:0;list-style:none}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--btn);border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.lang{font:inherit;font-weight:600;background:var(--btn);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:9px 10px;cursor:pointer}
+.lang:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+[dir=rtl] .brand small{letter-spacing:normal}
+[dir=rtl] .wl li{text-align:right}
 @media (max-width:900px){body{height:auto;overflow:auto}main{grid-template-columns:1fr;overflow:visible}.col,.col.left,.col.right{overflow:visible}.lists{flex:none}.wl{flex:none;overflow:visible;min-height:0}.stage{min-height:60vh}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand"><span>M365 Events</span><small>Community Raffle</small></div>
+  <div class="brand"><span>M365 Events</span><small data-i18n="brandSub">Community Raffle</small></div>
   <div class="hbtns">
+    <select id="langSel" class="lang" aria-label="Language"></select>
     <button id="fsBtn" type="button">&#9974; Fullscreen</button>
-    <button id="resetBtn" type="button" class="danger">Reset all</button>
+    <button id="resetBtn" type="button" class="danger" data-i18n="resetAll">Reset all</button>
   </div>
 </header>
-<div class="notice" role="note">⚠ <span><b>Nothing is saved.</b> All names, prizes and winners are cleared if you refresh or close this browser tab.</span></div>
+<div class="notice" role="note">⚠ <span><b data-i18n="noticeBold">Nothing is saved.</b><span data-i18n="noticeRest"> All names, prizes and winners are cleared if you refresh or close this browser tab.</span></span></div>
 
 <main>
   <div class="col left">
     <section class="panel" aria-labelledby="setupH">
-      <h2 id="setupH">Setup</h2>
-      <label for="names">Entrants: one name per line</label>
+      <h2 id="setupH" data-i18n="setup">Setup</h2>
+      <label for="names" data-i18n="entrantsLabel">Entrants: one name per line</label>
       <textarea id="names" placeholder="Jane Doe&#10;John Smith&#10;&#8230;"></textarea>
-      <label for="prizeCount">Number of prizes (optional)</label>
+      <label for="prizeCount" data-i18n="prizeCountLabel">Number of prizes (optional)</label>
       <input id="prizeCount" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 10">
-      <label for="prizes">Prize names (optional): one per line, awarded in order</label>
+      <label for="prizes" data-i18n="prizeNamesLabel">Prize names (optional): one per line, awarded in order</label>
       <textarea id="prizes" placeholder="Surface Headphones&#10;Conference pass&#10;&#8230;"></textarea>
       <div class="row">
-        <button id="loadBtn" type="button" class="primary">Load list</button>
-        <button id="clearBtn" type="button">Clear text</button>
+        <button id="loadBtn" type="button" class="primary" data-i18n="loadList">Load list</button>
+        <button id="clearBtn" type="button" data-i18n="clearText">Clear text</button>
       </div>
       <div class="status" id="status" role="status"></div>
     </section>
     <section class="panel" aria-label="Statistics">
       <div class="stats">
-        <div class="stat"><b id="sTotal">0</b><span>Entrants</span></div>
-        <div class="stat"><b id="sLeft">0</b><span>Eligible</span></div>
-        <div class="stat"><b id="sWon">0</b><span>Winners</span></div>
+        <div class="stat"><b id="sTotal">0</b><span data-i18n="statEntrants">Entrants</span></div>
+        <div class="stat"><b id="sLeft">0</b><span data-i18n="statEligible">Eligible</span></div>
+        <div class="stat"><b id="sWon">0</b><span data-i18n="statWinners">Winners</span></div>
       </div>
     </section>
   </div>
@@ -129,21 +134,21 @@ ol,ul{margin:0;padding:0;list-style:none}
       <div id="sub" aria-live="polite">Paste names and press &#8220;Load list&#8221;</div>
       <div class="row" style="justify-content:center">
         <button id="drawBtn" type="button" class="primary big" disabled>&#127881; Draw winner</button>
-        <button id="absentBtn" type="button" class="big" hidden>Not here</button>
+        <button id="absentBtn" type="button" class="big" hidden data-i18n="notHere">Not here</button>
       </div>
-      <div class="hint">Press <b>Space</b> to draw</div>
+      <div class="hint" data-i18n="pressSpace">Press Space to draw</div>
     </section>
 
     <div class="lists">
       <section class="panel" aria-labelledby="wH">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <h2 id="wH" style="margin:0">Winners</h2>
-          <button id="copyBtn" type="button" class="mini">Copy winners</button>
+          <h2 id="wH" style="margin:0" data-i18n="winnersH">Winners</h2>
+          <button id="copyBtn" type="button" class="mini" data-i18n="copyWinners">Copy winners</button>
         </div>
         <ol class="wl" id="winList"></ol>
       </section>
       <section class="panel" aria-labelledby="aH">
-        <h2 id="aH">Not present</h2>
+        <h2 id="aH" data-i18n="notPresentH">Not present</h2>
         <ul class="wl" id="absList"></ul>
       </section>
     </div>
@@ -158,6 +163,431 @@ ol,ul{margin:0;padding:0;list-style:none}
   const C = 326.7;
   const key = s => s.trim().toLowerCase();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PARTY = '\uD83C\uDF89';
+
+  // ── Language settings — edit these to configure ──────────────────────────
+  const AUTO_DETECT_LANGUAGE = true;   // false = always start in English
+  const DEFAULT_LANG = 'en';
+  // Languages offered in the picker (order preserved). Trim to limit choices.
+  const ENABLED_LANGUAGES = ['en','da','sv','nb','fi','de','nl','fr','es','pt','it','pl','ar'];
+  const RTL = new Set(['ar']);
+  const LANG_NAMES = { en:'English', da:'Dansk', sv:'Svenska', nb:'Norsk', fi:'Suomi',
+    de:'Deutsch', nl:'Nederlands', fr:'Fran\u00e7ais', es:'Espa\u00f1ol', pt:'Portugu\u00eas',
+    it:'Italiano', pl:'Polski', ar:'\u0627\u0644\u0639\u0631\u0628\u064a\u0629' };
+
+  const I18N = {
+    en: {
+      brandSub:'Community Raffle', fullscreen:'Fullscreen', resetAll:'Reset all',
+      noticeBold:'Nothing is saved.', noticeRest:' All names, prizes and winners are cleared if you refresh or close this browser tab.',
+      setup:'Setup', entrantsLabel:'Entrants: one name per line',
+      prizeCountLabel:'Number of prizes (optional)', prizeNamesLabel:'Prize names (optional): one per line, awarded in order',
+      loadList:'Load list', clearText:'Clear text',
+      statEntrants:'Entrants', statEligible:'Eligible', statWinners:'Winners',
+      winnersH:'Winners', copyWinners:'Copy winners', notPresentH:'Not present',
+      ready:'Ready to draw', pasteToStart:'Paste names and press \u201CLoad list\u201D',
+      notHere:'Not here', pressSpace:'Press Space to draw',
+      noWinners:'No winners yet', none:'None', ret:'Return', retTitle:'Return to pool',
+      drawingMsg:'Drawing\u2026', congrats:'Congratulations!', redrawNeeded:'Redraw needed',
+      prizeReturned:'Prize returned. Click \u201CDraw winner\u201D to redraw it.',
+      langLabel:'Language', drawWinner:'Draw winner', allAwarded:'All prizes awarded',
+      noPrizeLimit:'No prize limit', thanks:'All prizes awarded \u2014 thanks for playing!',
+      noneRemaining:'No eligible entrants remaining',
+      toastPasteName:'Paste at least one name', toastPrizePositive:'Number of prizes must be a positive whole number',
+      toastNoEligible:'No eligible entrants left', toastAllAwarded:'All prizes awarded',
+      toastCopied:'Winners copied', toastCopyFailed:'Copy failed', toastNoWinners:'No winners yet',
+      toastFsUnavail:'Fullscreen not available here', toastWaitDraw:'Wait for the draw to finish',
+      confirmReset:'Reset everything? This clears entrants, prizes, winners and the not-present list.',
+      prizesLeft:(x,y)=>`Prizes left: ${x} of ${y}`, nowDrawing:p=>`Now drawing for: ${p}`,
+      eligibleCount:n=>`${n} eligible`, winsPrize:p=>`wins ${p}!`,
+      drawProgress:(a,t)=>`Draw winner (${a} of ${t})`, prizeLabelN:n=>`Prize #${n}`,
+      statusLoaded:(n,d,x,total)=>`Loaded ${n} name${n===1?'':'s'}`+(d?`, skipped ${d} duplicate${d===1?'':'s'}`:'')+(x?`, ${x} already drawn/excluded`:'')+(isFinite(total)?`. ${total} prize${total===1?'':'s'} total.`:'. No prize limit.'),
+      toastBack:name=>`${name} is back in the pool`,
+      toastAbsent:name=>`${name} marked not present \u2014 click Draw winner to redraw`,
+      confirmReturn:name=>`Return "${name}" to the eligible pool? Their prize goes back too.`
+    },
+    da: {
+      brandSub:'F\u00e6llesskabslodtr\u00e6kning', fullscreen:'Fuld sk\u00e6rm', resetAll:'Nulstil alt',
+      noticeBold:'Intet gemmes.', noticeRest:' Alle navne, pr\u00e6mier og vindere slettes, hvis du opdaterer eller lukker denne fane.',
+      setup:'Ops\u00e6tning', entrantsLabel:'Deltagere: \u00e9t navn pr. linje',
+      prizeCountLabel:'Antal pr\u00e6mier (valgfrit)', prizeNamesLabel:'Pr\u00e6mienavne (valgfrit): \u00e9t pr. linje, tildeles i r\u00e6kkef\u00f8lge',
+      loadList:'Indl\u00e6s liste', clearText:'Ryd tekst',
+      statEntrants:'Deltagere', statEligible:'Kvalificerede', statWinners:'Vindere',
+      winnersH:'Vindere', copyWinners:'Kopi\u00e9r vindere', notPresentH:'Ikke til stede',
+      ready:'Klar til lodtr\u00e6kning', pasteToStart:'Inds\u00e6t navne og tryk p\u00e5 \u201CIndl\u00e6s liste\u201D',
+      notHere:'Ikke her', pressSpace:'Tryk p\u00e5 mellemrum for at tr\u00e6kke',
+      noWinners:'Ingen vindere endnu', none:'Ingen', ret:'Retur', retTitle:'Tilbage i puljen',
+      drawingMsg:'Tr\u00e6kker\u2026', congrats:'Tillykke!', redrawNeeded:'Ny lodtr\u00e6kning n\u00f8dvendig',
+      prizeReturned:'Pr\u00e6mien er lagt tilbage. Tryk p\u00e5 \u201CTr\u00e6k vinder\u201D for at tr\u00e6kke igen.',
+      langLabel:'Sprog', drawWinner:'Tr\u00e6k vinder', allAwarded:'Alle pr\u00e6mier uddelt',
+      noPrizeLimit:'Ingen pr\u00e6miegr\u00e6nse', thanks:'Alle pr\u00e6mier uddelt \u2014 tak fordi du var med!',
+      noneRemaining:'Ingen kvalificerede deltagere tilbage',
+      toastPasteName:'Inds\u00e6t mindst \u00e9t navn', toastPrizePositive:'Antal pr\u00e6mier skal v\u00e6re et positivt heltal',
+      toastNoEligible:'Ingen kvalificerede deltagere tilbage', toastAllAwarded:'Alle pr\u00e6mier uddelt',
+      toastCopied:'Vindere kopieret', toastCopyFailed:'Kopiering mislykkedes', toastNoWinners:'Ingen vindere endnu',
+      toastFsUnavail:'Fuld sk\u00e6rm er ikke tilg\u00e6ngelig her', toastWaitDraw:'Vent til lodtr\u00e6kningen er f\u00e6rdig',
+      confirmReset:'Nulstil alt? Dette rydder deltagere, pr\u00e6mier, vindere og listen over ikke til stede.',
+      prizesLeft:(x,y)=>`Pr\u00e6mier tilbage: ${x} af ${y}`, nowDrawing:p=>`Tr\u00e6kker nu til: ${p}`,
+      eligibleCount:n=>`${n} kvalificeret`, winsPrize:p=>`vinder ${p}!`,
+      drawProgress:(a,t)=>`Tr\u00e6k vinder (${a} af ${t})`, prizeLabelN:n=>`Pr\u00e6mie nr. ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} navn${n===1?'':'e'} indl\u00e6st`+(d?`, ${d} dublet${d===1?'':'ter'} sprunget over`:'')+(x?`, ${x} allerede trukket`:'')+(isFinite(total)?`. ${total} pr\u00e6mie${total===1?'':'r'} i alt.`:'. Ingen pr\u00e6miegr\u00e6nse.'),
+      toastBack:name=>`${name} er tilbage i puljen`,
+      toastAbsent:name=>`${name} markeret som ikke til stede \u2014 tryk p\u00e5 \u201CTr\u00e6k vinder\u201D for at tr\u00e6kke igen`,
+      confirmReturn:name=>`S\u00e6t \u201C${name}\u201D tilbage i puljen? Pr\u00e6mien g\u00e5r ogs\u00e5 tilbage.`
+    },
+    sv: {
+      brandSub:'Gemenskapslottning', fullscreen:'Helsk\u00e4rm', resetAll:'\u00c5terst\u00e4ll allt',
+      noticeBold:'Inget sparas.', noticeRest:' Alla namn, priser och vinnare rensas om du uppdaterar eller st\u00e4nger denna flik.',
+      setup:'Inst\u00e4llningar', entrantsLabel:'Deltagare: ett namn per rad',
+      prizeCountLabel:'Antal priser (valfritt)', prizeNamesLabel:'Prisnamn (valfritt): ett per rad, delas ut i ordning',
+      loadList:'L\u00e4s in lista', clearText:'Rensa text',
+      statEntrants:'Deltagare', statEligible:'Beh\u00f6riga', statWinners:'Vinnare',
+      winnersH:'Vinnare', copyWinners:'Kopiera vinnare', notPresentH:'Ej n\u00e4rvarande',
+      ready:'Redo att dra', pasteToStart:'Klistra in namn och tryck p\u00e5 \u201DL\u00e4s in lista\u201D',
+      notHere:'Inte h\u00e4r', pressSpace:'Tryck p\u00e5 mellanslag f\u00f6r att dra',
+      noWinners:'Inga vinnare \u00e4n', none:'Inga', ret:'\u00c5ter', retTitle:'Tillbaka i poolen',
+      drawingMsg:'Drar\u2026', congrats:'Grattis!', redrawNeeded:'Ny dragning beh\u00f6vs',
+      prizeReturned:'Priset \u00e4r \u00e5terlagt. Tryck p\u00e5 \u201DDra vinnare\u201D f\u00f6r att dra igen.',
+      langLabel:'Spr\u00e5k', drawWinner:'Dra vinnare', allAwarded:'Alla priser utdelade',
+      noPrizeLimit:'Ingen prisgr\u00e4ns', thanks:'Alla priser utdelade \u2014 tack f\u00f6r att du var med!',
+      noneRemaining:'Inga beh\u00f6riga deltagare kvar',
+      toastPasteName:'Klistra in minst ett namn', toastPrizePositive:'Antalet priser m\u00e5ste vara ett positivt heltal',
+      toastNoEligible:'Inga beh\u00f6riga deltagare kvar', toastAllAwarded:'Alla priser utdelade',
+      toastCopied:'Vinnare kopierade', toastCopyFailed:'Kopiering misslyckades', toastNoWinners:'Inga vinnare \u00e4n',
+      toastFsUnavail:'Helsk\u00e4rm \u00e4r inte tillg\u00e4ngligt h\u00e4r', toastWaitDraw:'V\u00e4nta tills dragningen \u00e4r klar',
+      confirmReset:'\u00c5terst\u00e4ll allt? Detta rensar deltagare, priser, vinnare och listan \u00f6ver ej n\u00e4rvarande.',
+      prizesLeft:(x,y)=>`Priser kvar: ${x} av ${y}`, nowDrawing:p=>`Drar nu f\u00f6r: ${p}`,
+      eligibleCount:n=>`${n} beh\u00f6rig${n===1?'':'a'}`, winsPrize:p=>`vinner ${p}!`,
+      drawProgress:(a,t)=>`Dra vinnare (${a} av ${t})`, prizeLabelN:n=>`Pris nr ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} namn inl\u00e4st${n===1?'':'a'}`+(d?`, ${d} dublett${d===1?'':'er'} \u00f6verhoppad${d===1?'':'e'}`:'')+(x?`, ${x} redan dragna`:'')+(isFinite(total)?`. ${total} pris${total===1?'':'er'} totalt.`:'. Ingen prisgr\u00e4ns.'),
+      toastBack:name=>`${name} \u00e4r tillbaka i poolen`,
+      toastAbsent:name=>`${name} markerad som ej n\u00e4rvarande \u2014 tryck p\u00e5 \u201DDra vinnare\u201D f\u00f6r att dra igen`,
+      confirmReturn:name=>`L\u00e4gg tillbaka \u201D${name}\u201D i poolen? Priset g\u00e5r ocks\u00e5 tillbaka.`
+    },
+    nb: {
+      brandSub:'Fellesskapstrekning', fullscreen:'Fullskjerm', resetAll:'Tilbakestill alt',
+      noticeBold:'Ingenting lagres.', noticeRest:' Alle navn, premier og vinnere slettes hvis du oppdaterer eller lukker denne fanen.',
+      setup:'Oppsett', entrantsLabel:'Deltakere: ett navn per linje',
+      prizeCountLabel:'Antall premier (valgfritt)', prizeNamesLabel:'Premienavn (valgfritt): ett per linje, deles ut i rekkef\u00f8lge',
+      loadList:'Last inn liste', clearText:'T\u00f8m tekst',
+      statEntrants:'Deltakere', statEligible:'Kvalifiserte', statWinners:'Vinnere',
+      winnersH:'Vinnere', copyWinners:'Kopier vinnere', notPresentH:'Ikke til stede',
+      ready:'Klar til trekning', pasteToStart:'Lim inn navn og trykk p\u00e5 \u00abLast inn liste\u00bb',
+      notHere:'Ikke her', pressSpace:'Trykk mellomrom for \u00e5 trekke',
+      noWinners:'Ingen vinnere enn\u00e5', none:'Ingen', ret:'Retur', retTitle:'Tilbake i puljen',
+      drawingMsg:'Trekker\u2026', congrats:'Gratulerer!', redrawNeeded:'Ny trekning n\u00f8dvendig',
+      prizeReturned:'Premien er lagt tilbake. Trykk p\u00e5 \u00abTrekk vinner\u00bb for \u00e5 trekke p\u00e5 nytt.',
+      langLabel:'Spr\u00e5k', drawWinner:'Trekk vinner', allAwarded:'Alle premier delt ut',
+      noPrizeLimit:'Ingen premiegrense', thanks:'Alle premier delt ut \u2014 takk for at du var med!',
+      noneRemaining:'Ingen kvalifiserte deltakere igjen',
+      toastPasteName:'Lim inn minst ett navn', toastPrizePositive:'Antall premier m\u00e5 v\u00e6re et positivt heltall',
+      toastNoEligible:'Ingen kvalifiserte deltakere igjen', toastAllAwarded:'Alle premier delt ut',
+      toastCopied:'Vinnere kopiert', toastCopyFailed:'Kopiering mislyktes', toastNoWinners:'Ingen vinnere enn\u00e5',
+      toastFsUnavail:'Fullskjerm er ikke tilgjengelig her', toastWaitDraw:'Vent til trekningen er ferdig',
+      confirmReset:'Tilbakestille alt? Dette t\u00f8mmer deltakere, premier, vinnere og frav\u00e6rslisten.',
+      prizesLeft:(x,y)=>`Premier igjen: ${x} av ${y}`, nowDrawing:p=>`Trekker n\u00e5 for: ${p}`,
+      eligibleCount:n=>`${n} kvalifisert`, winsPrize:p=>`vinner ${p}!`,
+      drawProgress:(a,t)=>`Trekk vinner (${a} av ${t})`, prizeLabelN:n=>`Premie nr. ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} navn lastet inn`+(d?`, ${d} duplikat${d===1?'':'er'} hoppet over`:'')+(x?`, ${x} allerede trukket`:'')+(isFinite(total)?`. ${total} premie${total===1?'':'r'} totalt.`:'. Ingen premiegrense.'),
+      toastBack:name=>`${name} er tilbake i puljen`,
+      toastAbsent:name=>`${name} merket som ikke til stede \u2014 trykk p\u00e5 \u00abTrekk vinner\u00bb for \u00e5 trekke p\u00e5 nytt`,
+      confirmReturn:name=>`Sette \u00ab${name}\u00bb tilbake i puljen? Premien g\u00e5r ogs\u00e5 tilbake.`
+    },
+    fi: {
+      brandSub:'Yhteis\u00f6arvonta', fullscreen:'Koko n\u00e4ytt\u00f6', resetAll:'Nollaa kaikki',
+      noticeBold:'Mit\u00e4\u00e4n ei tallenneta.', noticeRest:' Kaikki nimet, palkinnot ja voittajat poistuvat, jos p\u00e4ivit\u00e4t tai suljet t\u00e4m\u00e4n v\u00e4lilehden.',
+      setup:'Asetukset', entrantsLabel:'Osallistujat: yksi nimi rivi\u00e4 kohden',
+      prizeCountLabel:'Palkintojen m\u00e4\u00e4r\u00e4 (valinnainen)', prizeNamesLabel:'Palkintojen nimet (valinnainen): yksi rivi\u00e4 kohden, jaetaan j\u00e4rjestyksess\u00e4',
+      loadList:'Lataa lista', clearText:'Tyhjenn\u00e4 teksti',
+      statEntrants:'Osallistujat', statEligible:'Mukana', statWinners:'Voittajat',
+      winnersH:'Voittajat', copyWinners:'Kopioi voittajat', notPresentH:'Ei paikalla',
+      ready:'Valmis arvontaan', pasteToStart:'Liit\u00e4 nimet ja paina \u201DLataa lista\u201D',
+      notHere:'Ei paikalla', pressSpace:'Paina v\u00e4lily\u00f6nti\u00e4 arpoaksesi',
+      noWinners:'Ei viel\u00e4 voittajia', none:'Ei ket\u00e4\u00e4n', ret:'Palauta', retTitle:'Takaisin mukaan',
+      drawingMsg:'Arvotaan\u2026', congrats:'Onnittelut!', redrawNeeded:'Uusi arvonta tarvitaan',
+      prizeReturned:'Palkinto palautettu. Paina \u201DArvo voittaja\u201D arpoaksesi uudelleen.',
+      langLabel:'Kieli', drawWinner:'Arvo voittaja', allAwarded:'Kaikki palkinnot jaettu',
+      noPrizeLimit:'Ei palkintorajaa', thanks:'Kaikki palkinnot jaettu \u2014 kiitos osallistumisesta!',
+      noneRemaining:'Ei j\u00e4ljell\u00e4 osallistujia',
+      toastPasteName:'Liit\u00e4 v\u00e4hint\u00e4\u00e4n yksi nimi', toastPrizePositive:'Palkintojen m\u00e4\u00e4r\u00e4n on oltava positiivinen kokonaisluku',
+      toastNoEligible:'Ei j\u00e4ljell\u00e4 osallistujia', toastAllAwarded:'Kaikki palkinnot jaettu',
+      toastCopied:'Voittajat kopioitu', toastCopyFailed:'Kopiointi ep\u00e4onnistui', toastNoWinners:'Ei viel\u00e4 voittajia',
+      toastFsUnavail:'Koko n\u00e4ytt\u00f6 ei ole k\u00e4ytett\u00e4viss\u00e4 t\u00e4\u00e4ll\u00e4', toastWaitDraw:'Odota, ett\u00e4 arvonta p\u00e4\u00e4ttyy',
+      confirmReset:'Nollataanko kaikki? T\u00e4m\u00e4 tyhjent\u00e4\u00e4 osallistujat, palkinnot, voittajat ja poissaolijat.',
+      prizesLeft:(x,y)=>`Palkintoja j\u00e4ljell\u00e4: ${x} / ${y}`, nowDrawing:p=>`Arvotaan: ${p}`,
+      eligibleCount:n=>`${n} mukana`, winsPrize:p=>`voittaa: ${p}!`,
+      drawProgress:(a,t)=>`Arvo voittaja (${a}/${t})`, prizeLabelN:n=>`Palkinto nro ${n}`,
+      statusLoaded:(n,d,x,total)=>`Ladattu ${n} nime\u00e4`+(d?`, ohitettu ${d} kaksoiskappaletta`:'')+(x?`, ${x} jo arvottu`:'')+(isFinite(total)?`. Yhteens\u00e4 ${total} palkintoa.`:'. Ei palkintorajaa.'),
+      toastBack:name=>`${name} on taas mukana`,
+      toastAbsent:name=>`${name} merkitty poissaolevaksi \u2014 paina \u201DArvo voittaja\u201D arpoaksesi uudelleen`,
+      confirmReturn:name=>`Palautetaanko \u201D${name}\u201D mukaan? My\u00f6s palkinto palautuu.`
+    },
+    de: {
+      brandSub:'Community-Verlosung', fullscreen:'Vollbild', resetAll:'Alles zur\u00fccksetzen',
+      noticeBold:'Nichts wird gespeichert.', noticeRest:' Alle Namen, Preise und Gewinner werden gel\u00f6scht, wenn Sie die Seite aktualisieren oder den Tab schlie\u00dfen.',
+      setup:'Einrichtung', entrantsLabel:'Teilnehmer: ein Name pro Zeile',
+      prizeCountLabel:'Anzahl der Preise (optional)', prizeNamesLabel:'Preisnamen (optional): einer pro Zeile, in Reihenfolge vergeben',
+      loadList:'Liste laden', clearText:'Text l\u00f6schen',
+      statEntrants:'Teilnehmer', statEligible:'Berechtigt', statWinners:'Gewinner',
+      winnersH:'Gewinner', copyWinners:'Gewinner kopieren', notPresentH:'Nicht anwesend',
+      ready:'Bereit zum Ziehen', pasteToStart:'Namen einf\u00fcgen und \u201EListe laden\u201C klicken',
+      notHere:'Nicht da', pressSpace:'Leertaste zum Ziehen dr\u00fccken',
+      noWinners:'Noch keine Gewinner', none:'Keine', ret:'Zur\u00fcck', retTitle:'Zur\u00fcck in den Pool',
+      drawingMsg:'Ziehe\u2026', congrats:'Herzlichen Gl\u00fcckwunsch!', redrawNeeded:'Neu ziehen',
+      prizeReturned:'Preis zur\u00fcckgegeben. Klicken Sie auf \u201EGewinner ziehen\u201C, um erneut zu ziehen.',
+      langLabel:'Sprache', drawWinner:'Gewinner ziehen', allAwarded:'Alle Preise vergeben',
+      noPrizeLimit:'Kein Preislimit', thanks:'Alle Preise vergeben \u2014 danke f\u00fcrs Mitmachen!',
+      noneRemaining:'Keine berechtigten Teilnehmer mehr',
+      toastPasteName:'Mindestens einen Namen einf\u00fcgen', toastPrizePositive:'Die Anzahl der Preise muss eine positive ganze Zahl sein',
+      toastNoEligible:'Keine berechtigten Teilnehmer mehr', toastAllAwarded:'Alle Preise vergeben',
+      toastCopied:'Gewinner kopiert', toastCopyFailed:'Kopieren fehlgeschlagen', toastNoWinners:'Noch keine Gewinner',
+      toastFsUnavail:'Vollbild hier nicht verf\u00fcgbar', toastWaitDraw:'Warten Sie, bis die Ziehung beendet ist',
+      confirmReset:'Alles zur\u00fccksetzen? Dies l\u00f6scht Teilnehmer, Preise, Gewinner und die Abwesenheitsliste.',
+      prizesLeft:(x,y)=>`Verbleibende Preise: ${x} von ${y}`, nowDrawing:p=>`Ziehung f\u00fcr: ${p}`,
+      eligibleCount:n=>`${n} berechtigt`, winsPrize:p=>`gewinnt ${p}!`,
+      drawProgress:(a,t)=>`Gewinner ziehen (${a} von ${t})`, prizeLabelN:n=>`Preis Nr. ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} Name${n===1?'':'n'} geladen`+(d?`, ${d} Duplikat${d===1?'':'e'} \u00fcbersprungen`:'')+(x?`, ${x} bereits gezogen`:'')+(isFinite(total)?`. ${total} Preis${total===1?'':'e'} insgesamt.`:'. Kein Preislimit.'),
+      toastBack:name=>`${name} ist zur\u00fcck im Pool`,
+      toastAbsent:name=>`${name} als nicht anwesend markiert \u2014 \u201EGewinner ziehen\u201C klicken zum Neuziehen`,
+      confirmReturn:name=>`\u201E${name}\u201C zur\u00fcck in den Pool? Der Preis geht ebenfalls zur\u00fcck.`
+    },
+    nl: {
+      brandSub:'Community-loterij', fullscreen:'Volledig scherm', resetAll:'Alles resetten',
+      noticeBold:'Er wordt niets opgeslagen.', noticeRest:' Alle namen, prijzen en winnaars worden gewist als je vernieuwt of dit tabblad sluit.',
+      setup:'Instellen', entrantsLabel:'Deelnemers: \u00e9\u00e9n naam per regel',
+      prizeCountLabel:'Aantal prijzen (optioneel)', prizeNamesLabel:'Prijsnamen (optioneel): \u00e9\u00e9n per regel, in volgorde toegekend',
+      loadList:'Lijst laden', clearText:'Tekst wissen',
+      statEntrants:'Deelnemers', statEligible:'In aanmerking', statWinners:'Winnaars',
+      winnersH:'Winnaars', copyWinners:'Winnaars kopi\u00ebren', notPresentH:'Niet aanwezig',
+      ready:'Klaar om te trekken', pasteToStart:'Plak namen en klik op \u2018Lijst laden\u2019',
+      notHere:'Niet hier', pressSpace:'Druk op Spatie om te trekken',
+      noWinners:'Nog geen winnaars', none:'Geen', ret:'Terug', retTitle:'Terug in de pool',
+      drawingMsg:'Trekken\u2026', congrats:'Gefeliciteerd!', redrawNeeded:'Opnieuw trekken',
+      prizeReturned:'Prijs teruggezet. Klik op \u2018Winnaar trekken\u2019 om opnieuw te trekken.',
+      langLabel:'Taal', drawWinner:'Winnaar trekken', allAwarded:'Alle prijzen toegekend',
+      noPrizeLimit:'Geen prijslimiet', thanks:'Alle prijzen toegekend \u2014 bedankt voor het meedoen!',
+      noneRemaining:'Geen deelnemers meer in aanmerking',
+      toastPasteName:'Plak minstens \u00e9\u00e9n naam', toastPrizePositive:'Het aantal prijzen moet een positief geheel getal zijn',
+      toastNoEligible:'Geen deelnemers meer in aanmerking', toastAllAwarded:'Alle prijzen toegekend',
+      toastCopied:'Winnaars gekopieerd', toastCopyFailed:'Kopi\u00ebren mislukt', toastNoWinners:'Nog geen winnaars',
+      toastFsUnavail:'Volledig scherm hier niet beschikbaar', toastWaitDraw:'Wacht tot de trekking klaar is',
+      confirmReset:'Alles resetten? Dit wist deelnemers, prijzen, winnaars en de afwezigheidslijst.',
+      prizesLeft:(x,y)=>`Prijzen over: ${x} van ${y}`, nowDrawing:p=>`Nu trekken voor: ${p}`,
+      eligibleCount:n=>`${n} in aanmerking`, winsPrize:p=>`wint ${p}!`,
+      drawProgress:(a,t)=>`Winnaar trekken (${a} van ${t})`, prizeLabelN:n=>`Prijs nr. ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} na${n===1?'am':'men'} geladen`+(d?`, ${d} duplica${d===1?'at':'ten'} overgeslagen`:'')+(x?`, ${x} al getrokken`:'')+(isFinite(total)?`. ${total} prij${total===1?'s':'zen'} in totaal.`:'. Geen prijslimiet.'),
+      toastBack:name=>`${name} is terug in de pool`,
+      toastAbsent:name=>`${name} gemarkeerd als niet aanwezig \u2014 klik op \u2018Winnaar trekken\u2019 om opnieuw te trekken`,
+      confirmReturn:name=>`\u2018${name}\u2019 terug in de pool? De prijs gaat ook terug.`
+    },
+    fr: {
+      brandSub:'Tirage communautaire', fullscreen:'Plein \u00e9cran', resetAll:'Tout r\u00e9initialiser',
+      noticeBold:'Rien n\u2019est enregistr\u00e9.', noticeRest:' Tous les noms, lots et gagnants sont effac\u00e9s si vous actualisez ou fermez cet onglet.',
+      setup:'Configuration', entrantsLabel:'Participants\u00a0: un nom par ligne',
+      prizeCountLabel:'Nombre de lots (facultatif)', prizeNamesLabel:'Noms des lots (facultatif)\u00a0: un par ligne, attribu\u00e9s dans l\u2019ordre',
+      loadList:'Charger la liste', clearText:'Effacer',
+      statEntrants:'Participants', statEligible:'\u00c9ligibles', statWinners:'Gagnants',
+      winnersH:'Gagnants', copyWinners:'Copier les gagnants', notPresentH:'Absents',
+      ready:'Pr\u00eat \u00e0 tirer', pasteToStart:'Collez des noms et cliquez sur \u00ab\u00a0Charger la liste\u00a0\u00bb',
+      notHere:'Absent', pressSpace:'Appuyez sur Espace pour tirer',
+      noWinners:'Aucun gagnant', none:'Aucun', ret:'Rendre', retTitle:'Remettre dans le tirage',
+      drawingMsg:'Tirage\u2026', congrats:'F\u00e9licitations\u00a0!', redrawNeeded:'Nouveau tirage requis',
+      prizeReturned:'Lot remis en jeu. Cliquez sur \u00ab\u00a0Tirer un gagnant\u00a0\u00bb pour le retirer.',
+      langLabel:'Langue', drawWinner:'Tirer un gagnant', allAwarded:'Tous les lots attribu\u00e9s',
+      noPrizeLimit:'Aucune limite de lots', thanks:'Tous les lots attribu\u00e9s \u2014 merci d\u2019avoir particip\u00e9\u00a0!',
+      noneRemaining:'Plus aucun participant \u00e9ligible',
+      toastPasteName:'Collez au moins un nom', toastPrizePositive:'Le nombre de lots doit \u00eatre un entier positif',
+      toastNoEligible:'Plus aucun participant \u00e9ligible', toastAllAwarded:'Tous les lots attribu\u00e9s',
+      toastCopied:'Gagnants copi\u00e9s', toastCopyFailed:'\u00c9chec de la copie', toastNoWinners:'Aucun gagnant',
+      toastFsUnavail:'Plein \u00e9cran indisponible ici', toastWaitDraw:'Attendez la fin du tirage',
+      confirmReset:'Tout r\u00e9initialiser\u00a0? Cela efface les participants, les lots, les gagnants et la liste des absents.',
+      prizesLeft:(x,y)=>`Lots restants\u00a0: ${x} sur ${y}`, nowDrawing:p=>`Tirage pour\u00a0: ${p}`,
+      eligibleCount:n=>`${n} \u00e9ligible${n===1?'':'s'}`, winsPrize:p=>`gagne ${p}\u00a0!`,
+      drawProgress:(a,t)=>`Tirer un gagnant (${a} sur ${t})`, prizeLabelN:n=>`Lot n\u00b0${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} nom${n===1?'':'s'} charg\u00e9${n===1?'':'s'}`+(d?`, ${d} doublon${d===1?'':'s'} ignor\u00e9${d===1?'':'s'}`:'')+(x?`, ${x} d\u00e9j\u00e0 tir\u00e9(s)`:'')+(isFinite(total)?`. ${total} lot${total===1?'':'s'} au total.`:'. Aucune limite de lots.'),
+      toastBack:name=>`${name} est de retour dans le tirage`,
+      toastAbsent:name=>`${name} marqu\u00e9 absent \u2014 cliquez sur \u00ab\u00a0Tirer un gagnant\u00a0\u00bb pour retirer`,
+      confirmReturn:name=>`Remettre \u00ab\u00a0${name}\u00a0\u00bb dans le tirage\u00a0? Son lot est \u00e9galement remis en jeu.`
+    },
+    es: {
+      brandSub:'Sorteo de la comunidad', fullscreen:'Pantalla completa', resetAll:'Restablecer todo',
+      noticeBold:'No se guarda nada.', noticeRest:' Todos los nombres, premios y ganadores se borran si actualizas o cierras esta pesta\u00f1a.',
+      setup:'Configuraci\u00f3n', entrantsLabel:'Participantes: un nombre por l\u00ednea',
+      prizeCountLabel:'N\u00famero de premios (opcional)', prizeNamesLabel:'Nombres de premios (opcional): uno por l\u00ednea, otorgados en orden',
+      loadList:'Cargar lista', clearText:'Borrar texto',
+      statEntrants:'Participantes', statEligible:'Elegibles', statWinners:'Ganadores',
+      winnersH:'Ganadores', copyWinners:'Copiar ganadores', notPresentH:'Ausentes',
+      ready:'Listo para sortear', pasteToStart:'Pega nombres y pulsa \u00abCargar lista\u00bb',
+      notHere:'No est\u00e1', pressSpace:'Pulsa Espacio para sortear',
+      noWinners:'A\u00fan no hay ganadores', none:'Ninguno', ret:'Devolver', retTitle:'Devolver al sorteo',
+      drawingMsg:'Sorteando\u2026', congrats:'\u00a1Enhorabuena!', redrawNeeded:'Volver a sortear',
+      prizeReturned:'Premio devuelto. Pulsa \u00abSortear ganador\u00bb para volver a sortearlo.',
+      langLabel:'Idioma', drawWinner:'Sortear ganador', allAwarded:'Todos los premios otorgados',
+      noPrizeLimit:'Sin l\u00edmite de premios', thanks:'Todos los premios otorgados \u2014 \u00a1gracias por participar!',
+      noneRemaining:'No quedan participantes elegibles',
+      toastPasteName:'Pega al menos un nombre', toastPrizePositive:'El n\u00famero de premios debe ser un entero positivo',
+      toastNoEligible:'No quedan participantes elegibles', toastAllAwarded:'Todos los premios otorgados',
+      toastCopied:'Ganadores copiados', toastCopyFailed:'Error al copiar', toastNoWinners:'A\u00fan no hay ganadores',
+      toastFsUnavail:'Pantalla completa no disponible aqu\u00ed', toastWaitDraw:'Espera a que termine el sorteo',
+      confirmReset:'\u00bfRestablecer todo? Esto borra participantes, premios, ganadores y la lista de ausentes.',
+      prizesLeft:(x,y)=>`Premios restantes: ${x} de ${y}`, nowDrawing:p=>`Sorteando: ${p}`,
+      eligibleCount:n=>`${n} elegible${n===1?'':'s'}`, winsPrize:p=>`gana ${p}!`,
+      drawProgress:(a,t)=>`Sortear ganador (${a} de ${t})`, prizeLabelN:n=>`Premio n.\u00ba ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} nombre${n===1?'':'s'} cargado${n===1?'':'s'}`+(d?`, ${d} duplicado${d===1?'':'s'} omitido${d===1?'':'s'}`:'')+(x?`, ${x} ya sorteado(s)`:'')+(isFinite(total)?`. ${total} premio${total===1?'':'s'} en total.`:'. Sin l\u00edmite de premios.'),
+      toastBack:name=>`${name} vuelve al sorteo`,
+      toastAbsent:name=>`${name} marcado como ausente \u2014 pulsa \u00abSortear ganador\u00bb para repetir`,
+      confirmReturn:name=>`\u00bfDevolver a \u00ab${name}\u00bb al sorteo? Su premio tambi\u00e9n vuelve.`
+    },
+    pt: {
+      brandSub:'Sorteio da comunidade', fullscreen:'Ecr\u00e3 inteiro', resetAll:'Repor tudo',
+      noticeBold:'Nada \u00e9 guardado.', noticeRest:' Todos os nomes, pr\u00e9mios e vencedores s\u00e3o apagados se atualizar ou fechar este separador.',
+      setup:'Configura\u00e7\u00e3o', entrantsLabel:'Participantes: um nome por linha',
+      prizeCountLabel:'N\u00famero de pr\u00e9mios (opcional)', prizeNamesLabel:'Nomes dos pr\u00e9mios (opcional): um por linha, atribu\u00eddos por ordem',
+      loadList:'Carregar lista', clearText:'Limpar texto',
+      statEntrants:'Participantes', statEligible:'Eleg\u00edveis', statWinners:'Vencedores',
+      winnersH:'Vencedores', copyWinners:'Copiar vencedores', notPresentH:'Ausentes',
+      ready:'Pronto para sortear', pasteToStart:'Cole nomes e prima \u00abCarregar lista\u00bb',
+      notHere:'Ausente', pressSpace:'Prima Espa\u00e7o para sortear',
+      noWinners:'Ainda sem vencedores', none:'Nenhum', ret:'Devolver', retTitle:'Devolver ao sorteio',
+      drawingMsg:'A sortear\u2026', congrats:'Parab\u00e9ns!', redrawNeeded:'Novo sorteio necess\u00e1rio',
+      prizeReturned:'Pr\u00e9mio devolvido. Prima \u00abSortear vencedor\u00bb para sortear de novo.',
+      langLabel:'Idioma', drawWinner:'Sortear vencedor', allAwarded:'Todos os pr\u00e9mios atribu\u00eddos',
+      noPrizeLimit:'Sem limite de pr\u00e9mios', thanks:'Todos os pr\u00e9mios atribu\u00eddos \u2014 obrigado por participar!',
+      noneRemaining:'N\u00e3o restam participantes eleg\u00edveis',
+      toastPasteName:'Cole pelo menos um nome', toastPrizePositive:'O n\u00famero de pr\u00e9mios deve ser um inteiro positivo',
+      toastNoEligible:'N\u00e3o restam participantes eleg\u00edveis', toastAllAwarded:'Todos os pr\u00e9mios atribu\u00eddos',
+      toastCopied:'Vencedores copiados', toastCopyFailed:'Falha ao copiar', toastNoWinners:'Ainda sem vencedores',
+      toastFsUnavail:'Ecr\u00e3 inteiro indispon\u00edvel aqui', toastWaitDraw:'Aguarde o fim do sorteio',
+      confirmReset:'Repor tudo? Isto apaga participantes, pr\u00e9mios, vencedores e a lista de ausentes.',
+      prizesLeft:(x,y)=>`Pr\u00e9mios restantes: ${x} de ${y}`, nowDrawing:p=>`A sortear: ${p}`,
+      eligibleCount:n=>`${n} eleg\u00edve${n===1?'l':'is'}`, winsPrize:p=>`ganha ${p}!`,
+      drawProgress:(a,t)=>`Sortear vencedor (${a} de ${t})`, prizeLabelN:n=>`Pr\u00e9mio n.\u00ba ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} nome${n===1?'':'s'} carregado${n===1?'':'s'}`+(d?`, ${d} duplicado${d===1?'':'s'} ignorado${d===1?'':'s'}`:'')+(x?`, ${x} j\u00e1 sorteado(s)`:'')+(isFinite(total)?`. ${total} pr\u00e9mio${total===1?'':'s'} no total.`:'. Sem limite de pr\u00e9mios.'),
+      toastBack:name=>`${name} voltou ao sorteio`,
+      toastAbsent:name=>`${name} marcado como ausente \u2014 prima \u00abSortear vencedor\u00bb para repetir`,
+      confirmReturn:name=>`Devolver \u00ab${name}\u00bb ao sorteio? O pr\u00e9mio tamb\u00e9m volta.`
+    },
+    it: {
+      brandSub:'Estrazione della community', fullscreen:'Schermo intero', resetAll:'Reimposta tutto',
+      noticeBold:'Niente viene salvato.', noticeRest:' Tutti i nomi, i premi e i vincitori vengono cancellati se aggiorni o chiudi questa scheda.',
+      setup:'Impostazioni', entrantsLabel:'Partecipanti: un nome per riga',
+      prizeCountLabel:'Numero di premi (facoltativo)', prizeNamesLabel:'Nomi dei premi (facoltativo): uno per riga, assegnati in ordine',
+      loadList:'Carica elenco', clearText:'Cancella testo',
+      statEntrants:'Partecipanti', statEligible:'Idonei', statWinners:'Vincitori',
+      winnersH:'Vincitori', copyWinners:'Copia vincitori', notPresentH:'Assenti',
+      ready:'Pronto per l\u2019estrazione', pasteToStart:'Incolla i nomi e premi \u00abCarica elenco\u00bb',
+      notHere:'Assente', pressSpace:'Premi Spazio per estrarre',
+      noWinners:'Ancora nessun vincitore', none:'Nessuno', ret:'Rimetti', retTitle:'Rimetti nel gruppo',
+      drawingMsg:'Estrazione\u2026', congrats:'Congratulazioni!', redrawNeeded:'Nuova estrazione',
+      prizeReturned:'Premio rimesso in gioco. Premi \u00abEstrai vincitore\u00bb per riestrarlo.',
+      langLabel:'Lingua', drawWinner:'Estrai vincitore', allAwarded:'Tutti i premi assegnati',
+      noPrizeLimit:'Nessun limite di premi', thanks:'Tutti i premi assegnati \u2014 grazie per aver partecipato!',
+      noneRemaining:'Nessun partecipante idoneo rimasto',
+      toastPasteName:'Incolla almeno un nome', toastPrizePositive:'Il numero di premi deve essere un intero positivo',
+      toastNoEligible:'Nessun partecipante idoneo rimasto', toastAllAwarded:'Tutti i premi assegnati',
+      toastCopied:'Vincitori copiati', toastCopyFailed:'Copia non riuscita', toastNoWinners:'Ancora nessun vincitore',
+      toastFsUnavail:'Schermo intero non disponibile qui', toastWaitDraw:'Attendi la fine dell\u2019estrazione',
+      confirmReset:'Reimpostare tutto? Verranno cancellati partecipanti, premi, vincitori e l\u2019elenco degli assenti.',
+      prizesLeft:(x,y)=>`Premi rimasti: ${x} di ${y}`, nowDrawing:p=>`Estrazione per: ${p}`,
+      eligibleCount:n=>`${n} idone${n===1?'o':'i'}`, winsPrize:p=>`vince ${p}!`,
+      drawProgress:(a,t)=>`Estrai vincitore (${a} di ${t})`, prizeLabelN:n=>`Premio n. ${n}`,
+      statusLoaded:(n,d,x,total)=>`${n} nome${n===1?'':'i'} caricat${n===1?'o':'i'}`+(d?`, ${d} duplicat${d===1?'o':'i'} ignorat${d===1?'o':'i'}`:'')+(x?`, ${x} gi\u00e0 estratt${x===1?'o':'i'}`:'')+(isFinite(total)?`. ${total} premi${total===1?'o':''} in totale.`:'. Nessun limite di premi.'),
+      toastBack:name=>`${name} \u00e8 di nuovo nel gruppo`,
+      toastAbsent:name=>`${name} segnato assente \u2014 premi \u00abEstrai vincitore\u00bb per riestrarre`,
+      confirmReturn:name=>`Rimettere \u00ab${name}\u00bb nel gruppo? Anche il premio torna disponibile.`
+    },
+    pl: {
+      brandSub:'Losowanie spo\u0142eczno\u015bci', fullscreen:'Pe\u0142ny ekran', resetAll:'Zresetuj wszystko',
+      noticeBold:'Nic nie jest zapisywane.', noticeRest:' Wszystkie nazwiska, nagrody i zwyci\u0119zcy zostan\u0105 usuni\u0119te po od\u015bwie\u017ceniu lub zamkni\u0119ciu tej karty.',
+      setup:'Ustawienia', entrantsLabel:'Uczestnicy: jedno imi\u0119 w wierszu',
+      prizeCountLabel:'Liczba nagr\u00f3d (opcjonalnie)', prizeNamesLabel:'Nazwy nagr\u00f3d (opcjonalnie): jedna w wierszu, przyznawane po kolei',
+      loadList:'Wczytaj list\u0119', clearText:'Wyczy\u015b\u0107 tekst',
+      statEntrants:'Uczestnicy', statEligible:'Uprawnieni', statWinners:'Zwyci\u0119zcy',
+      winnersH:'Zwyci\u0119zcy', copyWinners:'Kopiuj zwyci\u0119zc\u00f3w', notPresentH:'Nieobecni',
+      ready:'Gotowy do losowania', pasteToStart:'Wklej imiona i kliknij \u201EWczytaj list\u0119\u201D',
+      notHere:'Nieobecny', pressSpace:'Naci\u015bnij spacj\u0119, aby losowa\u0107',
+      noWinners:'Brak zwyci\u0119zc\u00f3w', none:'Brak', ret:'Zwr\u00f3\u0107', retTitle:'Z powrotem do puli',
+      drawingMsg:'Losowanie\u2026', congrats:'Gratulacje!', redrawNeeded:'Wymagane ponowne losowanie',
+      prizeReturned:'Nagroda wr\u00f3ci\u0142a do puli. Kliknij \u201ELosuj zwyci\u0119zc\u0119\u201D, aby wylosowa\u0107 ponownie.',
+      langLabel:'J\u0119zyk', drawWinner:'Losuj zwyci\u0119zc\u0119', allAwarded:'Wszystkie nagrody przyznane',
+      noPrizeLimit:'Bez limitu nagr\u00f3d', thanks:'Wszystkie nagrody przyznane \u2014 dzi\u0119kujemy za udzia\u0142!',
+      noneRemaining:'Brak uprawnionych uczestnik\u00f3w',
+      toastPasteName:'Wklej co najmniej jedno imi\u0119', toastPrizePositive:'Liczba nagr\u00f3d musi by\u0107 dodatni\u0105 liczb\u0105 ca\u0142kowit\u0105',
+      toastNoEligible:'Brak uprawnionych uczestnik\u00f3w', toastAllAwarded:'Wszystkie nagrody przyznane',
+      toastCopied:'Skopiowano zwyci\u0119zc\u00f3w', toastCopyFailed:'Kopiowanie nie powiod\u0142o si\u0119', toastNoWinners:'Brak zwyci\u0119zc\u00f3w',
+      toastFsUnavail:'Pe\u0142ny ekran niedost\u0119pny tutaj', toastWaitDraw:'Poczekaj na zako\u0144czenie losowania',
+      confirmReset:'Zresetowa\u0107 wszystko? Spowoduje to usuni\u0119cie uczestnik\u00f3w, nagr\u00f3d, zwyci\u0119zc\u00f3w i listy nieobecnych.',
+      prizesLeft:(x,y)=>`Pozosta\u0142e nagrody: ${x} z ${y}`, nowDrawing:p=>`Losowanie: ${p}`,
+      eligibleCount:n=>`uprawnieni: ${n}`, winsPrize:p=>`wygrywa ${p}!`,
+      drawProgress:(a,t)=>`Losuj zwyci\u0119zc\u0119 (${a} z ${t})`, prizeLabelN:n=>`Nagroda nr ${n}`,
+      statusLoaded:(n,d,x,total)=>`Wczytano ${n} imion`+(d?`, pomini\u0119to ${d} duplikat\u00f3w`:'')+(x?`, ${x} ju\u017c wylosowanych`:'')+(isFinite(total)?`. \u0141\u0105cznie ${total} nagr\u00f3d.`:'. Bez limitu nagr\u00f3d.'),
+      toastBack:name=>`${name} wraca do puli`,
+      toastAbsent:name=>`${name} oznaczony jako nieobecny \u2014 kliknij \u201ELosuj zwyci\u0119zc\u0119\u201D, aby wylosowa\u0107 ponownie`,
+      confirmReturn:name=>`Zwr\u00f3ci\u0107 \u201E${name}\u201D do puli? Nagroda r\u00f3wnie\u017c wr\u00f3ci.`
+    },
+    ar: {
+      brandSub:'\u0642\u0631\u0639\u0629 \u0627\u0644\u0645\u062c\u062a\u0645\u0639', fullscreen:'\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629', resetAll:'\u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0627\u0644\u0643\u0644',
+      noticeBold:'\u0644\u0627 \u064a\u062a\u0645 \u062d\u0641\u0638 \u0623\u064a \u0634\u064a\u0621.', noticeRest:' \u062a\u064f\u062d\u0630\u0641 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u0633\u0645\u0627\u0621 \u0648\u0627\u0644\u062c\u0648\u0627\u0626\u0632 \u0648\u0627\u0644\u0641\u0627\u0626\u0632\u064a\u0646 \u0625\u0630\u0627 \u0642\u0645\u062a \u0628\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0635\u0641\u062d\u0629 \u0623\u0648 \u0625\u063a\u0644\u0627\u0642 \u0647\u0630\u0647 \u0627\u0644\u0639\u0644\u0627\u0645\u0629.',
+      setup:'\u0627\u0644\u0625\u0639\u062f\u0627\u062f', entrantsLabel:'\u0627\u0644\u0645\u0634\u0627\u0631\u0643\u0648\u0646: \u0627\u0633\u0645 \u0648\u0627\u062d\u062f \u0641\u064a \u0643\u0644 \u0633\u0637\u0631',
+      prizeCountLabel:'\u0639\u062f\u062f \u0627\u0644\u062c\u0648\u0627\u0626\u0632 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)', prizeNamesLabel:'\u0623\u0633\u0645\u0627\u0621 \u0627\u0644\u062c\u0648\u0627\u0626\u0632 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a): \u0648\u0627\u062d\u062f\u0629 \u0641\u064a \u0643\u0644 \u0633\u0637\u0631\u060c \u062a\u064f\u0645\u0646\u062d \u0628\u0627\u0644\u062a\u0631\u062a\u064a\u0628',
+      loadList:'\u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0642\u0627\u0626\u0645\u0629', clearText:'\u0645\u0633\u062d \u0627\u0644\u0646\u0635',
+      statEntrants:'\u0627\u0644\u0645\u0634\u0627\u0631\u0643\u0648\u0646', statEligible:'\u0627\u0644\u0645\u0624\u0647\u0644\u0648\u0646', statWinners:'\u0627\u0644\u0641\u0627\u0626\u0632\u0648\u0646',
+      winnersH:'\u0627\u0644\u0641\u0627\u0626\u0632\u0648\u0646', copyWinners:'\u0646\u0633\u062e \u0627\u0644\u0641\u0627\u0626\u0632\u064a\u0646', notPresentH:'\u063a\u064a\u0631 \u062d\u0627\u0636\u0631\u064a\u0646',
+      ready:'\u062c\u0627\u0647\u0632 \u0644\u0644\u0633\u062d\u0628', pasteToStart:'\u0627\u0644\u0635\u0642 \u0627\u0644\u0623\u0633\u0645\u0627\u0621 \u0648\u0627\u0636\u063a\u0637 \u00ab\u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0642\u0627\u0626\u0645\u0629\u00bb',
+      notHere:'\u063a\u064a\u0631 \u0645\u0648\u062c\u0648\u062f', pressSpace:'\u0627\u0636\u063a\u0637 \u0645\u0633\u0627\u0641\u0629 \u0644\u0644\u0633\u062d\u0628',
+      noWinners:'\u0644\u0627 \u0641\u0627\u0626\u0632\u064a\u0646 \u0628\u0639\u062f', none:'\u0644\u0627 \u0623\u062d\u062f', ret:'\u0625\u0631\u062c\u0627\u0639', retTitle:'\u0625\u0639\u0627\u062f\u0629 \u0625\u0644\u0649 \u0627\u0644\u0642\u0627\u0626\u0645\u0629',
+      drawingMsg:'\u062c\u0627\u0631\u064d \u0627\u0644\u0633\u062d\u0628\u2026', congrats:'\u062a\u0647\u0627\u0646\u064a\u0646\u0627!', redrawNeeded:'\u064a\u0644\u0632\u0645 \u0633\u062d\u0628 \u062c\u062f\u064a\u062f',
+      prizeReturned:'\u0623\u064f\u0639\u064a\u062f\u062a \u0627\u0644\u062c\u0627\u0626\u0632\u0629. \u0627\u0636\u063a\u0637 \u00ab\u0633\u062d\u0628 \u0641\u0627\u0626\u0632\u00bb \u0644\u0644\u0633\u062d\u0628 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.',
+      langLabel:'\u0627\u0644\u0644\u063a\u0629', drawWinner:'\u0633\u062d\u0628 \u0641\u0627\u0626\u0632', allAwarded:'\u062a\u0645 \u0645\u0646\u062d \u062c\u0645\u064a\u0639 \u0627\u0644\u062c\u0648\u0627\u0626\u0632',
+      noPrizeLimit:'\u0644\u0627 \u062d\u062f\u0651 \u0644\u0644\u062c\u0648\u0627\u0626\u0632', thanks:'\u062a\u0645 \u0645\u0646\u062d \u062c\u0645\u064a\u0639 \u0627\u0644\u062c\u0648\u0627\u0626\u0632 \u2014 \u0634\u0643\u0631\u064b\u0627 \u0644\u0645\u0634\u0627\u0631\u0643\u062a\u0643\u0645!',
+      noneRemaining:'\u0644\u0627 \u0645\u0634\u0627\u0631\u0643\u064a\u0646 \u0645\u0624\u0647\u0644\u064a\u0646 \u0645\u062a\u0628\u0642\u064a\u0646',
+      toastPasteName:'\u0627\u0644\u0635\u0642 \u0627\u0633\u0645\u064b\u0627 \u0648\u0627\u062d\u062f\u064b\u0627 \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644', toastPrizePositive:'\u064a\u062c\u0628 \u0623\u0646 \u064a\u0643\u0648\u0646 \u0639\u062f\u062f \u0627\u0644\u062c\u0648\u0627\u0626\u0632 \u0639\u062f\u062f\u064b\u0627 \u0635\u062d\u064a\u062d\u064b\u0627 \u0645\u0648\u062c\u0628\u064b\u0627',
+      toastNoEligible:'\u0644\u0627 \u0645\u0634\u0627\u0631\u0643\u064a\u0646 \u0645\u0624\u0647\u0644\u064a\u0646 \u0645\u062a\u0628\u0642\u064a\u0646', toastAllAwarded:'\u062a\u0645 \u0645\u0646\u062d \u062c\u0645\u064a\u0639 \u0627\u0644\u062c\u0648\u0627\u0626\u0632',
+      toastCopied:'\u062a\u0645 \u0646\u0633\u062e \u0627\u0644\u0641\u0627\u0626\u0632\u064a\u0646', toastCopyFailed:'\u0641\u0634\u0644 \u0627\u0644\u0646\u0633\u062e', toastNoWinners:'\u0644\u0627 \u0641\u0627\u0626\u0632\u064a\u0646 \u0628\u0639\u062f',
+      toastFsUnavail:'\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629 \u063a\u064a\u0631 \u0645\u062a\u0627\u062d \u0647\u0646\u0627', toastWaitDraw:'\u0627\u0646\u062a\u0638\u0631 \u062d\u062a\u0649 \u064a\u0646\u062a\u0647\u064a \u0627\u0644\u0633\u062d\u0628',
+      confirmReset:'\u0625\u0639\u0627\u062f\u0629 \u062a\u0639\u064a\u064a\u0646 \u0643\u0644 \u0634\u064a\u0621\u061f \u0633\u064a\u0624\u062f\u064a \u0647\u0630\u0627 \u0625\u0644\u0649 \u0645\u0633\u062d \u0627\u0644\u0645\u0634\u0627\u0631\u0643\u064a\u0646 \u0648\u0627\u0644\u062c\u0648\u0627\u0626\u0632 \u0648\u0627\u0644\u0641\u0627\u0626\u0632\u064a\u0646 \u0648\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u063a\u0627\u0626\u0628\u064a\u0646.',
+      prizesLeft:(x,y)=>`\u0627\u0644\u062c\u0648\u0627\u0626\u0632 \u0627\u0644\u0645\u062a\u0628\u0642\u064a\u0629: ${x} \u0645\u0646 ${y}`, nowDrawing:p=>`\u0627\u0644\u0633\u062d\u0628 \u0627\u0644\u0622\u0646 \u0639\u0644\u0649: ${p}`,
+      eligibleCount:n=>`${n} \u0645\u0624\u0647\u0644`, winsPrize:p=>`\u064a\u0641\u0648\u0632 \u0628\u0640 ${p}!`,
+      drawProgress:(a,t)=>`\u0633\u062d\u0628 \u0641\u0627\u0626\u0632 (${a} \u0645\u0646 ${t})`, prizeLabelN:n=>`\u0627\u0644\u062c\u0627\u0626\u0632\u0629 \u0631\u0642\u0645 ${n}`,
+      statusLoaded:(n,d,x,total)=>`\u062a\u0645 \u062a\u062d\u0645\u064a\u0644 ${n} \u0627\u0633\u0645\u064b\u0627`+(d?`\u060c \u062a\u0645 \u062a\u062e\u0637\u064a ${d} \u0645\u0643\u0631\u0631\u064b\u0627`:'')+(x?`\u060c ${x} \u0633\u064f\u062d\u0628\u0648\u0627 \u0645\u0633\u0628\u0642\u064b\u0627`:'')+(isFinite(total)?`. ${total} \u062c\u0627\u0626\u0632\u0629 \u0625\u062c\u0645\u0627\u0644\u064b\u0627.`:'. \u0644\u0627 \u062d\u062f\u0651 \u0644\u0644\u062c\u0648\u0627\u0626\u0632.'),
+      toastBack:name=>`${name} \u0639\u0627\u062f \u0625\u0644\u0649 \u0627\u0644\u0642\u0627\u0626\u0645\u0629`,
+      toastAbsent:name=>`${name} \u0645\u064f\u0639\u0644\u064e\u0645 \u0643\u063a\u064a\u0631 \u062d\u0627\u0636\u0631 \u2014 \u0627\u0636\u063a\u0637 \u00ab\u0633\u062d\u0628 \u0641\u0627\u0626\u0632\u00bb \u0644\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0633\u062d\u0628`,
+      confirmReturn:name=>`\u0625\u0639\u0627\u062f\u0629 \u00ab${name}\u00bb \u0625\u0644\u0649 \u0627\u0644\u0642\u0627\u0626\u0645\u0629\u061f \u0633\u062a\u0639\u0648\u062f \u062c\u0627\u0626\u0632\u062a\u0647 \u0623\u064a\u0636\u064b\u0627.`
+    }
+  };
+
+  let curLang = DEFAULT_LANG;
+  const t = (k, ...a) => { const L = I18N[curLang] || I18N.en; const v = (k in L) ? L[k] : I18N.en[k]; return typeof v === 'function' ? v(...a) : v; };
+
+  function applyStatic() {
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    $('fsBtn').textContent = '\u26F6 ' + t('fullscreen');
+    $('langSel').setAttribute('aria-label', t('langLabel'));
+    document.documentElement.lang = curLang;
+    document.documentElement.dir = RTL.has(curLang) ? 'rtl' : 'ltr';
+  }
+
+  function setLang(code) {
+    curLang = I18N[code] ? code : 'en';
+    applyStatic();
+    if (!drawing && !lastWinner) { $('display').className = ''; $('display').textContent = t('ready'); }
+    render();
+  }
+
+  function detectLang() {
+    if (!AUTO_DETECT_LANGUAGE) return DEFAULT_LANG;
+    const cands = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+    for (const c of cands) { const base = (c || '').toLowerCase().split('-')[0]; if (ENABLED_LANGUAGES.includes(base) && I18N[base]) return base; }
+    return DEFAULT_LANG;
+  }
+
+  function initLang() {
+    const sel = $('langSel');
+    sel.innerHTML = '';
+    ENABLED_LANGUAGES.forEach(code => { if (!I18N[code]) return; const o = document.createElement('option'); o.value = code; o.textContent = LANG_NAMES[code] || code; sel.appendChild(o); });
+    curLang = detectLang();
+    sel.value = curLang;
+    sel.onchange = () => setLang(sel.value);
+  }
 
   // In-memory state only: everything clears on refresh.
   let entrants = [];        // ordered unique display names
@@ -180,7 +610,7 @@ ol,ul{margin:0;padding:0;list-style:none}
   // Prize label for the i-th award (0-based).
   function prizeNameFor(i) {
     if (prizeNames[i]) return prizeNames[i];
-    if (isFinite(totalPrizes())) return 'Prize #' + (i + 1);
+    if (isFinite(totalPrizes())) return t('prizeLabelN', i + 1);
     return '';
   }
 
@@ -219,53 +649,53 @@ ol,ul{margin:0;padding:0;list-style:none}
 
     // Prizes left counter.
     $('prizesLeft').textContent = entrants.length
-      ? (isFinite(total) ? `Prizes left: ${Math.max(total - awarded, 0)} of ${total}` : 'No prize limit')
+      ? (isFinite(total) ? t('prizesLeft', Math.max(total - awarded, 0), total) : t('noPrizeLimit'))
       : '';
 
     // Upcoming prize above the draw area.
     const up = prizeNameFor(awarded);
-    $('prizeNow').textContent = allAwarded ? 'All prizes awarded'
-      : (up ? `Now drawing for: ${up}` : '');
+    $('prizeNow').textContent = allAwarded ? t('allAwarded')
+      : (up ? t('nowDrawing', up) : '');
 
     // Draw button: label with progress + disabled state.
     const drawBtn = $('drawBtn');
     drawBtn.disabled = drawing || el.length === 0 || allAwarded;
-    if (allAwarded) drawBtn.textContent = 'All prizes awarded';
-    else if (isFinite(total)) drawBtn.textContent = `\uD83C\uDF89 Draw winner (${awarded + 1} of ${total})`;
-    else drawBtn.textContent = '\uD83C\uDF89 Draw winner';
+    if (allAwarded) drawBtn.textContent = t('allAwarded');
+    else if (isFinite(total)) drawBtn.textContent = PARTY + ' ' + t('drawProgress', awarded + 1, total);
+    else drawBtn.textContent = PARTY + ' ' + t('drawWinner');
 
     // Idle sub-message.
     if (!drawing && !lastWinner) {
-      $('sub').textContent = !entrants.length ? 'Paste names and press \u201CLoad list\u201D'
-        : allAwarded ? 'All prizes awarded \u2014 thanks for playing!'
-        : el.length === 0 ? 'No eligible entrants remaining'
-        : `${el.length} eligible entrant${el.length === 1 ? '' : 's'}`;
+      $('sub').textContent = !entrants.length ? t('pasteToStart')
+        : allAwarded ? t('thanks')
+        : el.length === 0 ? t('noneRemaining')
+        : t('eligibleCount', el.length);
     }
 
     // Winners list.
     const wl = $('winList'); wl.innerHTML = '';
-    if (!winners.length) wl.innerHTML = '<li class="empty">No winners yet</li>';
+    if (!winners.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = t('noWinners'); wl.appendChild(li); }
     winners.forEach((name, i) => {
       const li = document.createElement('li');
-      li.innerHTML = '<span class="num"></span><div class="grow"><div class="wname"></div><div class="wprize"></div></div><button class="mini" type="button">Return</button>';
+      li.innerHTML = '<span class="num"></span><div class="grow"><div class="wname"></div><div class="wprize"></div></div><button class="mini" type="button"></button>';
       li.querySelector('.num').textContent = i + 1;
       li.querySelector('.wname').textContent = name;
       li.querySelector('.wprize').textContent = prizeNameFor(i);
       const b = li.querySelector('button');
-      b.title = 'Return to pool'; b.disabled = drawing;
+      b.textContent = t('ret'); b.title = t('retTitle'); b.disabled = drawing;
       b.onclick = () => returnToPool('w', i);
       wl.appendChild(li);
     });
 
     // Not-present list.
     const al = $('absList'); al.innerHTML = '';
-    if (!absent.length) al.innerHTML = '<li class="empty">None</li>';
+    if (!absent.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = t('none'); al.appendChild(li); }
     absent.forEach((name, i) => {
       const li = document.createElement('li');
-      li.innerHTML = '<div class="grow wname"></div><button class="mini" type="button">Return</button>';
+      li.innerHTML = '<div class="grow wname"></div><button class="mini" type="button"></button>';
       li.querySelector('.wname').textContent = name;
       const b = li.querySelector('button');
-      b.title = 'Return to pool'; b.disabled = drawing;
+      b.textContent = t('ret'); b.title = t('retTitle'); b.disabled = drawing;
       b.onclick = () => returnToPool('a', i);
       al.appendChild(li);
     });
@@ -274,26 +704,26 @@ ol,ul{margin:0;padding:0;list-style:none}
   function returnToPool(type, i) {
     if (drawing) return;
     const name = type === 'w' ? winners[i] : absent[i];
-    if (!confirm(`Return "${name}" to the eligible pool? Their prize goes back too.`)) return;
+    if (!confirm(t('confirmReturn', name))) return;
     if (type === 'w') winners.splice(i, 1); else absent.splice(i, 1);
     excluded.delete(key(name));
     if (lastWinner && key(lastWinner) === key(name)) {
       lastWinner = null; $('absentBtn').hidden = true;
-      $('display').className = ''; $('display').textContent = 'Ready to draw';
+      $('display').className = ''; $('display').textContent = t('ready');
     }
-    toast(`${name} is back in the pool`);
+    toast(t('toastBack', name));
     render();
   }
 
   $('loadBtn').onclick = () => {
     const { out, dupes } = parseLines($('names').value);
-    if (!out.length) { toast('Paste at least one name'); return; }
+    if (!out.length) { toast(t('toastPasteName')); return; }
 
     const raw = $('prizeCount').value.trim();
     let count = null;
     if (raw) {
       if (/^\d+$/.test(raw) && +raw > 0) count = +raw;
-      else { toast('Number of prizes must be a positive whole number'); return; }
+      else { toast(t('toastPrizePositive')); return; }
     }
 
     entrants = out;
@@ -302,14 +732,10 @@ ol,ul{margin:0;padding:0;list-style:none}
 
     const excludedNow = entrants.filter(n => excluded.has(key(n))).length;
     const total = totalPrizes();
-    $('status').textContent =
-      `Loaded ${out.length} name${out.length === 1 ? '' : 's'}` +
-      (dupes ? `, skipped ${dupes} duplicate${dupes === 1 ? '' : 's'}` : '') +
-      (excludedNow ? `, ${excludedNow} already drawn/excluded` : '') +
-      (isFinite(total) ? `. ${total} prize${total === 1 ? '' : 's'} total.` : '. No prize limit.');
+    $('status').textContent = t('statusLoaded', out.length, dupes, excludedNow, total);
 
     lastWinner = null; $('absentBtn').hidden = true;
-    $('display').className = ''; $('display').textContent = 'Ready to draw';
+    $('display').className = ''; $('display').textContent = t('ready');
     render();
   };
 
@@ -320,14 +746,14 @@ ol,ul{margin:0;padding:0;list-style:none}
   function draw() {
     if (drawing) return;
     const total = totalPrizes();
-    if (isFinite(total) && winners.length >= total) { toast('All prizes awarded'); return; }
+    if (isFinite(total) && winners.length >= total) { toast(t('toastAllAwarded')); return; }
     const pool = eligible();
-    if (!pool.length) { toast('No eligible entrants left'); return; }
+    if (!pool.length) { toast(t('toastNoEligible')); return; }
 
     drawing = true; lastWinner = null;
     $('absentBtn').hidden = true;
     const d = $('display'); d.className = 'shuffling';
-    $('sub').textContent = 'Drawing\u2026';
+    $('sub').textContent = t('drawingMsg');
     $('ring').classList.add('on');
     render();
 
@@ -355,9 +781,9 @@ ol,ul{margin:0;padding:0;list-style:none}
     $('ring').classList.remove('on');
     const d = $('display'); d.className = ''; void d.offsetWidth; d.className = 'win';
     d.textContent = name;
-    $('sub').textContent = prize ? `wins ${prize}!` : 'Congratulations!';
+    $('sub').textContent = prize ? t('winsPrize', prize) : t('congrats');
     $('absentBtn').hidden = false;
-    $('absentBtn').textContent = 'Not here';
+    $('absentBtn').textContent = t('notHere');
     confetti();
     render();
   }
@@ -368,11 +794,11 @@ ol,ul{margin:0;padding:0;list-style:none}
     const i = winners.lastIndexOf(lastWinner);
     if (i > -1) winners.splice(i, 1); // prize returns via position-based derivation
     absent.push(lastWinner);          // stays excluded from the pool
-    toast(`${lastWinner} marked not present \u2014 click Draw winner to redraw`);
+    toast(t('toastAbsent', lastWinner));
     lastWinner = null;
     $('absentBtn').hidden = true;
-    $('display').className = ''; $('display').textContent = 'Redraw needed';
-    $('sub').textContent = 'Prize returned. Click \u201CDraw winner\u201D to redraw it.';
+    $('display').className = ''; $('display').textContent = t('redrawNeeded');
+    $('sub').textContent = t('prizeReturned');
     render();
   };
 
@@ -386,33 +812,33 @@ ol,ul{margin:0;padding:0;list-style:none}
   });
 
   $('copyBtn').onclick = async () => {
-    if (!winners.length) { toast('No winners yet'); return; }
+    if (!winners.length) { toast(t('toastNoWinners')); return; }
     const text = winners.map((name, i) => {
       const prize = prizeNameFor(i);
       return `${i + 1}. ${name}${prize ? ' - ' + prize : ''}`;
     }).join('\n');
-    try { await navigator.clipboard.writeText(text); toast('Winners copied'); }
+    try { await navigator.clipboard.writeText(text); toast(t('toastCopied')); }
     catch {
       const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
-      ta.select(); try { document.execCommand('copy'); toast('Winners copied'); } catch { toast('Copy failed'); }
+      ta.select(); try { document.execCommand('copy'); toast(t('toastCopied')); } catch { toast(t('toastCopyFailed')); }
       ta.remove();
     }
   };
 
   $('resetBtn').onclick = () => {
-    if (drawing) { toast('Wait for the draw to finish'); return; }
-    if (!confirm('Reset everything? This clears entrants, prizes, winners and the not-present list.')) return;
+    if (drawing) { toast(t('toastWaitDraw')); return; }
+    if (!confirm(t('confirmReset'))) return;
     entrants = []; prizeNames = []; prizeCount = null; winners = []; absent = [];
     excluded.clear(); lastWinner = null;
     $('names').value = ''; $('prizes').value = ''; $('prizeCount').value = ''; $('status').textContent = '';
     $('absentBtn').hidden = true;
-    $('display').className = ''; $('display').textContent = 'Ready to draw';
+    $('display').className = ''; $('display').textContent = t('ready');
     render();
   };
 
   $('fsBtn').onclick = () => {
     if (document.fullscreenElement) document.exitFullscreen();
-    else document.documentElement.requestFullscreen?.().catch(() => toast('Fullscreen not available here'));
+    else document.documentElement.requestFullscreen?.().catch(() => toast(t('toastFsUnavail')));
   };
 
   // Warn before leaving if there is unsaved in-memory data.
@@ -444,6 +870,9 @@ ol,ul{margin:0;padding:0;list-style:none}
     raf = parts.length ? requestAnimationFrame(() => loop(w, h)) : (cx.clearRect(0, 0, w, h), null);
   }
 
+  initLang();
+  applyStatic();
+  $('display').textContent = t('ready');
   render();
 })();
 </script>
