@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>M365 Community Events Raffle</title>
 <style>
-:root{--bg:#0a0f1f;--panel:#131a31;--line:#243055;--txt:#eef1fb;--mut:#8f9abb;--a:#2f7cf6;--b:#8a5cf6;--c:#16c79a;--warn:#f5a524;--red:#ef4b5b}
+:root{--bg:#1b1a19;--panel:#262523;--line:#3a3937;--txt:#f3f2f1;--mut:#a6a3a0;--a:#2886de;--b:#0f6cbd;--c:#038387;--warn:#ffb900;--red:#d13438;--field:#201f1e;--btn:#33312e;--btnH:#403e3a}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--txt);height:100vh;display:flex;flex-direction:column;overflow:hidden;
-  background:radial-gradient(900px 500px at 85% -10%,#2f7cf633,transparent),radial-gradient(700px 500px at -10% 110%,#8a5cf633,transparent),var(--bg)}
+  background:radial-gradient(1100px 620px at 92% -20%,#2886de14,transparent),var(--bg)}
 header{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 28px;border-bottom:1px solid var(--line)}
-.notice{flex:none;display:flex;align-items:center;gap:8px;padding:8px 28px;font-size:13px;color:var(--warn);background:#1a1330;border-bottom:1px solid var(--line)}
+.notice{flex:none;display:flex;align-items:center;gap:8px;padding:8px 28px;font-size:13px;color:var(--warn);background:#2a2620;border-bottom:1px solid var(--line)}
 .notice b{color:var(--txt)}
 .brand{font-weight:800;font-size:24px;letter-spacing:.3px}
 .brand span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -24,21 +24,21 @@ main{flex:1 1 auto;min-height:0;overflow:hidden;display:grid;grid-template-colum
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
 h2{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:var(--mut);margin:0 0 10px}
 label{display:block;font-size:13px;color:var(--mut);margin:12px 0 6px}
-textarea,input[type=number]{width:100%;background:#0c1226;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.45 inherit;resize:vertical}
+textarea,input[type=number]{width:100%;background:var(--field);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.45 inherit;resize:vertical}
 input[type=number]{resize:none}
 textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--a);outline-offset:2px}
 #names{height:clamp(110px,17vh,200px)}#prizes{height:clamp(64px,9vh,96px)}
-button{font:inherit;font-weight:600;border:1px solid var(--line);background:#1b2445;color:var(--txt);padding:9px 14px;border-radius:10px;cursor:pointer;transition:transform .1s,background .2s}
-button:hover:not(:disabled){background:#243060}
+button{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--btn);color:var(--txt);padding:9px 14px;border-radius:10px;cursor:pointer;transition:transform .1s,background .2s}
+button:hover:not(:disabled){background:var(--btnH)}
 button:active:not(:disabled){transform:scale(.97)}
 button:disabled{opacity:.45;cursor:not-allowed}
 .primary{background:linear-gradient(90deg,var(--a),var(--b));border:0}
 .primary:hover:not(:disabled){filter:brightness(1.1);background:linear-gradient(90deg,var(--a),var(--b))}
-.danger{color:#ffb3bb;border-color:#5a2533}
+.danger{color:#f1707a;border-color:#6e2b2e}
 .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .status{font-size:13px;color:var(--mut);margin-top:10px;min-height:1.2em}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
-.stat{background:#0c1226;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stat{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
 .stat b{display:block;font-size:24px}
 .stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
 .stage{flex:0 1 auto;position:relative;overflow:hidden;min-height:min-content;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:10px 0}
@@ -49,12 +49,12 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .ring.on{opacity:1}
 .ring svg{transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:8}
-.ring .track{stroke:#243055}
+.ring .track{stroke:#3a3937}
 .ring #arc{stroke:url(#grad);stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:0}
 #count{position:absolute;inset:0;display:grid;place-items:center;font-size:40px;font-weight:800}
 #display{font-size:clamp(40px,7vw,104px);font-weight:800;line-height:1.1;max-width:95%;word-break:break-word;min-height:1.2em;padding:0 10px}
 #display.shuffling{color:var(--mut)}
-#display.win{background:linear-gradient(90deg,#fff,#b9d3ff,#d5c3ff);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+#display.win{background:linear-gradient(90deg,#ffffff,#bcd9f5);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
 @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
 #sub{color:var(--mut);font-size:15px;min-height:1.3em}
 .big{font-size:22px;padding:16px 38px;border-radius:14px}
@@ -62,7 +62,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 ol,ul{margin:0;padding:0;list-style:none}
 .wl li{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:1px solid var(--line)}
 .wl li:last-child{border-bottom:0}
-.num{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:#1b2445}
+.num{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--btn)}
 .wname{font-weight:600}
 .wprize{font-size:13px;color:var(--warn)}
 .grow{flex:1;min-width:0}
@@ -71,7 +71,7 @@ ol,ul{margin:0;padding:0;list-style:none}
 .lists{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:2fr 1fr;gap:16px}
 .lists .panel{display:flex;flex-direction:column;min-height:0}
 .wl{flex:1 1 auto;min-height:0;overflow-y:auto}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#1b2445;border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--btn);border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (max-width:900px){body{height:auto;overflow:auto}main{grid-template-columns:1fr;overflow:visible}.col,.col.left,.col.right{overflow:visible}.lists{flex:none}.wl{flex:none;overflow:visible;min-height:0}.stage{min-height:60vh}}
@@ -120,7 +120,7 @@ ol,ul{margin:0;padding:0;list-style:none}
       <div class="prize-now" id="prizeNow"></div>
       <div class="ring" id="ring" aria-hidden="true">
         <svg width="110" height="110" viewBox="0 0 120 120">
-          <defs><linearGradient id="grad"><stop offset="0" stop-color="#2f7cf6"/><stop offset="1" stop-color="#8a5cf6"/></linearGradient></defs>
+          <defs><linearGradient id="grad"><stop offset="0" stop-color="#2886de"/><stop offset="1" stop-color="#0f6cbd"/></linearGradient></defs>
           <circle class="track" cx="60" cy="60" r="52"/><circle id="arc" cx="60" cy="60" r="52"/>
         </svg>
         <div id="count"></div>
@@ -426,7 +426,7 @@ ol,ul{margin:0;padding:0;list-style:none}
     if (reduced) return;
     const r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
     cv.width = r.width * dpr; cv.height = r.height * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const colors = ['#2f7cf6', '#8a5cf6', '#16c79a', '#f5a524', '#ef4b5b', '#ffffff'];
+    const colors = ['#2886de', '#038387', '#ffb900', '#d13438', '#6bb700', '#ffffff'];
     for (let i = 0; i < 180; i++) parts.push({
       x: r.width / 2, y: r.height / 2, vx: (Math.random() - .5) * 16, vy: Math.random() * -14 - 4,
       s: Math.random() * 7 + 4, c: colors[i % colors.length], a: Math.random() * 6, va: (Math.random() - .5) * .3, life: 0
