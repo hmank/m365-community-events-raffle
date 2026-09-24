@@ -7,22 +7,25 @@
 <style>
 :root{--bg:#0a0f1f;--panel:#131a31;--line:#243055;--txt:#eef1fb;--mut:#8f9abb;--a:#2f7cf6;--b:#8a5cf6;--c:#16c79a;--warn:#f5a524;--red:#ef4b5b}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--txt);min-height:100vh;
+html,body{height:100%}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--txt);height:100vh;display:flex;flex-direction:column;overflow:hidden;
   background:radial-gradient(900px 500px at 85% -10%,#2f7cf633,transparent),radial-gradient(700px 500px at -10% 110%,#8a5cf633,transparent),var(--bg)}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px;border-bottom:1px solid var(--line)}
+header{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 28px;border-bottom:1px solid var(--line)}
+.notice{flex:none;display:flex;align-items:center;gap:8px;padding:8px 28px;font-size:13px;color:var(--warn);background:#1a1330;border-bottom:1px solid var(--line)}
+.notice b{color:var(--txt)}
 .brand{font-weight:800;font-size:24px;letter-spacing:.3px}
 .brand span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
 .brand small{display:block;font-size:12px;font-weight:600;color:var(--mut);letter-spacing:2px;text-transform:uppercase}
 .hbtns{display:flex;gap:8px;flex-wrap:wrap}
-main{display:grid;grid-template-columns:340px 1fr;gap:20px;padding:20px 28px}
-.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+main{flex:1 1 auto;min-height:0;overflow:hidden;display:grid;grid-template-columns:340px 1fr;gap:20px;padding:16px 28px}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0;min-height:0;overflow-y:auto}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
 h2{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:var(--mut);margin:0 0 10px}
 label{display:block;font-size:13px;color:var(--mut);margin:12px 0 6px}
 textarea,input[type=number]{width:100%;background:#0c1226;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.45 inherit;resize:vertical}
 input[type=number]{resize:none}
 textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--a);outline-offset:2px}
-#names{height:200px}#prizes{height:96px}
+#names{height:clamp(110px,17vh,200px)}#prizes{height:clamp(64px,9vh,96px)}
 button{font:inherit;font-weight:600;border:1px solid var(--line);background:#1b2445;color:var(--txt);padding:9px 14px;border-radius:10px;cursor:pointer;transition:transform .1s,background .2s}
 button:hover:not(:disabled){background:#243060}
 button:active:not(:disabled){transform:scale(.97)}
@@ -36,7 +39,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .stat{background:#0c1226;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
 .stat b{display:block;font-size:24px}
 .stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
-.stage{position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
+.stage{flex:1 1 auto;position:relative;overflow:hidden;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
 #fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .prize-now{font-size:clamp(16px,2vw,22px);color:var(--warn);font-weight:600;min-height:1.3em}
 .prizes-left{font-size:13px;color:var(--mut);letter-spacing:1px;text-transform:uppercase;min-height:1.2em}
@@ -63,11 +66,13 @@ ol,ul{margin:0;padding:0;list-style:none}
 .grow{flex:1;min-width:0}
 .mini{padding:4px 9px;font-size:12px;border-radius:8px}
 .empty{color:var(--mut);font-size:14px;padding:6px 0}
-.lists{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.lists{flex:none;display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.lists .panel{display:flex;flex-direction:column;min-height:0}
+.wl{max-height:22vh;overflow-y:auto}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#1b2445;border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-@media (max-width:900px){main{grid-template-columns:1fr}.lists{grid-template-columns:1fr}}
+@media (max-width:900px){body{height:auto;overflow:auto}main{grid-template-columns:1fr;overflow:visible}.col{overflow:visible}.wl{max-height:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -79,6 +84,7 @@ ol,ul{margin:0;padding:0;list-style:none}
     <button id="resetBtn" type="button" class="danger">Reset all</button>
   </div>
 </header>
+<div class="notice" role="note">⚠ <span><b>Nothing is saved.</b> All names, prizes and winners are cleared if you refresh or close this browser tab.</span></div>
 
 <main>
   <div class="col">
