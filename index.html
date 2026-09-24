@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>M365 Community Events Raffle</title>
 <style>
-:root{--bg:#1e1a16;--panel:#2a2420;--line:#3b332c;--txt:#f6f1ea;--mut:#b0a79c;--a:#ff7a59;--b:#ff9d4d;--c:#2dd4bf;--warn:#fbbf24;--red:#ef5350;--field:#241f1b;--btn:#352d26;--btnH:#423931}
+:root{--bg:#1e1a16;--panel:#2a2420;--line:#3b332c;--txt:#f6f1ea;--mut:#b0a79c;--a:#3b9dff;--b:#2563eb;--c:#2dd4bf;--warn:#fbbf24;--red:#ef5350;--field:#241f1b;--btn:#352d26;--btnH:#423931}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--txt);height:100vh;display:flex;flex-direction:column;overflow:hidden;
-  background:radial-gradient(1100px 620px at 90% -18%,#ff7a5921,transparent),radial-gradient(820px 520px at -8% 112%,#2dd4bf14,transparent),var(--bg)}
+  background:radial-gradient(1100px 620px at 90% -18%,#3b9dff21,transparent),radial-gradient(820px 520px at -8% 112%,#2dd4bf14,transparent),var(--bg)}
 header{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 28px;border-bottom:1px solid var(--line)}
 .notice{flex:none;display:flex;align-items:center;gap:8px;padding:8px 28px;font-size:13px;color:var(--warn);background:#2e2820;border-bottom:1px solid var(--line)}
 .notice b{color:var(--txt)}
@@ -54,7 +54,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
 #count{position:absolute;inset:0;display:grid;place-items:center;font-size:40px;font-weight:800}
 #display{font-size:clamp(40px,7vw,104px);font-weight:800;line-height:1.1;max-width:95%;word-break:break-word;min-height:1.2em;padding:0 10px}
 #display.shuffling{color:var(--mut)}
-#display.win{background:linear-gradient(90deg,#ffffff,#ffd9c2);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+#display.win{background:linear-gradient(90deg,#ffffff,#cfe3ff);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
 @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
 #sub{color:var(--mut);font-size:15px;min-height:1.3em}
 .big{font-size:22px;padding:16px 38px;border-radius:14px}
@@ -120,7 +120,7 @@ ol,ul{margin:0;padding:0;list-style:none}
       <div class="prize-now" id="prizeNow"></div>
       <div class="ring" id="ring" aria-hidden="true">
         <svg width="110" height="110" viewBox="0 0 120 120">
-          <defs><linearGradient id="grad"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#ff9d4d"/></linearGradient></defs>
+          <defs><linearGradient id="grad"><stop offset="0" stop-color="#3b9dff"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
           <circle class="track" cx="60" cy="60" r="52"/><circle id="arc" cx="60" cy="60" r="52"/>
         </svg>
         <div id="count"></div>
@@ -426,7 +426,7 @@ ol,ul{margin:0;padding:0;list-style:none}
     if (reduced) return;
     const r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
     cv.width = r.width * dpr; cv.height = r.height * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const colors = ['#ff7a59', '#ff9d4d', '#2dd4bf', '#fbbf24', '#ef5350', '#ffffff'];
+    const colors = ['#3b9dff', '#2563eb', '#2dd4bf', '#fbbf24', '#ef5350', '#ffffff'];
     for (let i = 0; i < 180; i++) parts.push({
       x: r.width / 2, y: r.height / 2, vx: (Math.random() - .5) * 16, vy: Math.random() * -14 - 4,
       s: Math.random() * 7 + 4, c: colors[i % colors.length], a: Math.random() * 6, va: (Math.random() - .5) * .3, life: 0
