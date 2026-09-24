@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M365 Community Events Raffle</title>
+<style>
+:root{--bg:#0a0f1f;--panel:#131a31;--line:#243055;--txt:#eef1fb;--mut:#8f9abb;--a:#2f7cf6;--b:#8a5cf6;--c:#16c79a;--warn:#f5a524;--red:#ef4b5b}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--txt);min-height:100vh;
+  background:radial-gradient(900px 500px at 85% -10%,#2f7cf633,transparent),radial-gradient(700px 500px at -10% 110%,#8a5cf633,transparent),var(--bg)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;font-size:24px;letter-spacing:.3px}
+.brand span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{display:block;font-size:12px;font-weight:600;color:var(--mut);letter-spacing:2px;text-transform:uppercase}
+.hbtns{display:flex;gap:8px;flex-wrap:wrap}
+main{display:grid;grid-template-columns:340px 1fr;gap:20px;padding:20px 28px}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;color:var(--mut);margin:0 0 10px}
+label{display:block;font-size:13px;color:var(--mut);margin:12px 0 6px}
+textarea,input[type=number]{width:100%;background:#0c1226;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:14px/1.45 inherit;resize:vertical}
+input[type=number]{resize:none}
+textarea:focus,input:focus,button:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+#names{height:200px}#prizes{height:96px}
+button{font:inherit;font-weight:600;border:1px solid var(--line);background:#1b2445;color:var(--txt);padding:9px 14px;border-radius:10px;cursor:pointer;transition:transform .1s,background .2s}
+button:hover:not(:disabled){background:#243060}
+button:active:not(:disabled){transform:scale(.97)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:linear-gradient(90deg,var(--a),var(--b));border:0}
+.primary:hover:not(:disabled){filter:brightness(1.1);background:linear-gradient(90deg,var(--a),var(--b))}
+.danger{color:#ffb3bb;border-color:#5a2533}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.status{font-size:13px;color:var(--mut);margin-top:10px;min-height:1.2em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+.stat{background:#0c1226;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:24px}
+.stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:1px}
+.stage{position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.prize-now{font-size:clamp(16px,2vw,22px);color:var(--warn);font-weight:600;min-height:1.3em}
+.prizes-left{font-size:13px;color:var(--mut);letter-spacing:1px;text-transform:uppercase;min-height:1.2em}
+.ring{position:relative;width:110px;height:110px;opacity:0;transition:opacity .3s}
+.ring.on{opacity:1}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:8}
+.ring .track{stroke:#243055}
+.ring #arc{stroke:url(#grad);stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:0}
+#count{position:absolute;inset:0;display:grid;place-items:center;font-size:40px;font-weight:800}
+#display{font-size:clamp(40px,7vw,104px);font-weight:800;line-height:1.1;max-width:95%;word-break:break-word;min-height:1.2em;padding:0 10px}
+#display.shuffling{color:var(--mut)}
+#display.win{background:linear-gradient(90deg,#fff,#b9d3ff,#d5c3ff);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+#sub{color:var(--mut);font-size:15px;min-height:1.3em}
+.big{font-size:22px;padding:16px 38px;border-radius:14px}
+.hint{font-size:12px;color:var(--mut)}
+ol,ul{margin:0;padding:0;list-style:none}
+.wl li{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:1px solid var(--line)}
+.wl li:last-child{border-bottom:0}
+.num{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:#1b2445}
+.wname{font-weight:600}
+.wprize{font-size:13px;color:var(--warn)}
+.grow{flex:1;min-width:0}
+.mini{padding:4px 9px;font-size:12px;border-radius:8px}
+.empty{color:var(--mut);font-size:14px;padding:6px 0}
+.lists{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#1b2445;border:1px solid var(--line);padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+@media (max-width:900px){main{grid-template-columns:1fr}.lists{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span>M365 Events</span><small>Community Raffle</small></div>
+  <div class="hbtns">
+    <button id="fsBtn" type="button">&#9974; Fullscreen</button>
+    <button id="resetBtn" type="button" class="danger">Reset all</button>
+  </div>
+</header>
+
+<main>
+  <div class="col">
+    <section class="panel" aria-labelledby="setupH">
+      <h2 id="setupH">Setup</h2>
+      <label for="names">Entrants: one name per line</label>
+      <textarea id="names" placeholder="Jane Doe&#10;John Smith&#10;&#8230;"></textarea>
+      <label for="prizeCount">Number of prizes (optional)</label>
+      <input id="prizeCount" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 10">
+      <label for="prizes">Prize names (optional): one per line, awarded in order</label>
+      <textarea id="prizes" placeholder="Surface Headphones&#10;Conference pass&#10;&#8230;"></textarea>
+      <div class="row">
+        <button id="loadBtn" type="button" class="primary">Load list</button>
+        <button id="clearBtn" type="button">Clear text</button>
+      </div>
+      <div class="status" id="status" role="status"></div>
+    </section>
+    <section class="panel" aria-label="Statistics">
+      <div class="stats">
+        <div class="stat"><b id="sTotal">0</b><span>Entrants</span></div>
+        <div class="stat"><b id="sLeft">0</b><span>Eligible</span></div>
+        <div class="stat"><b id="sWon">0</b><span>Winners</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="panel stage">
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <div class="prizes-left" id="prizesLeft"></div>
+      <div class="prize-now" id="prizeNow"></div>
+      <div class="ring" id="ring" aria-hidden="true">
+        <svg width="110" height="110" viewBox="0 0 120 120">
+          <defs><linearGradient id="grad"><stop offset="0" stop-color="#2f7cf6"/><stop offset="1" stop-color="#8a5cf6"/></linearGradient></defs>
+          <circle class="track" cx="60" cy="60" r="52"/><circle id="arc" cx="60" cy="60" r="52"/>
+        </svg>
+        <div id="count"></div>
+      </div>
+      <div id="display" aria-live="polite">Ready to draw</div>
+      <div id="sub" aria-live="polite">Paste names and press &#8220;Load list&#8221;</div>
+      <div class="row" style="justify-content:center">
+        <button id="drawBtn" type="button" class="primary big" disabled>&#127881; Draw winner</button>
+        <button id="absentBtn" type="button" class="big" hidden>Not here</button>
+      </div>
+      <div class="hint">Press <b>Space</b> to draw</div>
+    </section>
+
+    <div class="lists">
+      <section class="panel" aria-labelledby="wH">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h2 id="wH" style="margin:0">Winners</h2>
+          <button id="copyBtn" type="button" class="mini">Copy winners</button>
+        </div>
+        <ol class="wl" id="winList"></ol>
+      </section>
+      <section class="panel" aria-labelledby="aH">
+        <h2 id="aH">Not present</h2>
+        <ul class="wl" id="absList"></ul>
+      </section>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const DRAW_MS = 5000;
+  const C = 326.7;
+  const key = s => s.trim().toLowerCase();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // In-memory state only: everything clears on refresh.
+  let entrants = [];        // ordered unique display names
+  let prizeNames = [];      // optional named prizes, in award order
+  let prizeCount = null;    // optional explicit total (positive integer) or null
+  let winners = [];         // names in win order; prize derived from position
+  let absent = [];          // names marked not present (stay excluded)
+  const excluded = new Set(); // keys of winners + absent
+  let drawing = false;
+  let lastWinner = null;    // name string, set right after a reveal
+
+  const eligible = () => entrants.filter(n => !excluded.has(key(n)));
+
+  // Total prizes: explicit number wins; else count of names; else no limit.
+  function totalPrizes() {
+    if (prizeCount != null) return prizeCount;
+    if (prizeNames.length) return prizeNames.length;
+    return Infinity;
+  }
+  // Prize label for the i-th award (0-based).
+  function prizeNameFor(i) {
+    if (prizeNames[i]) return prizeNames[i];
+    if (isFinite(totalPrizes())) return 'Prize #' + (i + 1);
+    return '';
+  }
+
+  // Unbiased random integer in [0, n) using crypto.
+  function rand(n) {
+    const a = new Uint32Array(1), lim = Math.floor(0x100000000 / n) * n;
+    let x; do { crypto.getRandomValues(a); x = a[0]; } while (x >= lim);
+    return x % n;
+  }
+
+  function toast(msg) {
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function parseLines(text) {
+    const seen = new Set(), out = []; let dupes = 0;
+    for (const line of text.split(/\r?\n/)) {
+      const n = line.trim(); if (!n) continue;
+      const k = key(n);
+      if (seen.has(k)) { dupes++; continue; }
+      seen.add(k); out.push(n);
+    }
+    return { out, dupes };
+  }
+
+  function render() {
+    const el = eligible();
+    const total = totalPrizes();
+    const awarded = winners.length;
+    const allAwarded = isFinite(total) && awarded >= total;
+
+    $('sTotal').textContent = entrants.length;
+    $('sLeft').textContent = el.length;
+    $('sWon').textContent = winners.length;
+
+    // Prizes left counter.
+    $('prizesLeft').textContent = entrants.length
+      ? (isFinite(total) ? `Prizes left: ${Math.max(total - awarded, 0)} of ${total}` : 'No prize limit')
+      : '';
+
+    // Upcoming prize above the draw area.
+    const up = prizeNameFor(awarded);
+    $('prizeNow').textContent = allAwarded ? 'All prizes awarded'
+      : (up ? `Now drawing for: ${up}` : '');
+
+    // Draw button: label with progress + disabled state.
+    const drawBtn = $('drawBtn');
+    drawBtn.disabled = drawing || el.length === 0 || allAwarded;
+    if (allAwarded) drawBtn.textContent = 'All prizes awarded';
+    else if (isFinite(total)) drawBtn.textContent = `\uD83C\uDF89 Draw winner (${awarded + 1} of ${total})`;
+    else drawBtn.textContent = '\uD83C\uDF89 Draw winner';
+
+    // Idle sub-message.
+    if (!drawing && !lastWinner) {
+      $('sub').textContent = !entrants.length ? 'Paste names and press \u201CLoad list\u201D'
+        : allAwarded ? 'All prizes awarded \u2014 thanks for playing!'
+        : el.length === 0 ? 'No eligible entrants remaining'
+        : `${el.length} eligible entrant${el.length === 1 ? '' : 's'}`;
+    }
+
+    // Winners list.
+    const wl = $('winList'); wl.innerHTML = '';
+    if (!winners.length) wl.innerHTML = '<li class="empty">No winners yet</li>';
+    winners.forEach((name, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="num"></span><div class="grow"><div class="wname"></div><div class="wprize"></div></div><button class="mini" type="button">Return</button>';
+      li.querySelector('.num').textContent = i + 1;
+      li.querySelector('.wname').textContent = name;
+      li.querySelector('.wprize').textContent = prizeNameFor(i);
+      const b = li.querySelector('button');
+      b.title = 'Return to pool'; b.disabled = drawing;
+      b.onclick = () => returnToPool('w', i);
+      wl.appendChild(li);
+    });
+
+    // Not-present list.
+    const al = $('absList'); al.innerHTML = '';
+    if (!absent.length) al.innerHTML = '<li class="empty">None</li>';
+    absent.forEach((name, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = '<div class="grow wname"></div><button class="mini" type="button">Return</button>';
+      li.querySelector('.wname').textContent = name;
+      const b = li.querySelector('button');
+      b.title = 'Return to pool'; b.disabled = drawing;
+      b.onclick = () => returnToPool('a', i);
+      al.appendChild(li);
+    });
+  }
+
+  function returnToPool(type, i) {
+    if (drawing) return;
+    const name = type === 'w' ? winners[i] : absent[i];
+    if (!confirm(`Return "${name}" to the eligible pool? Their prize goes back too.`)) return;
+    if (type === 'w') winners.splice(i, 1); else absent.splice(i, 1);
+    excluded.delete(key(name));
+    if (lastWinner && key(lastWinner) === key(name)) {
+      lastWinner = null; $('absentBtn').hidden = true;
+      $('display').className = ''; $('display').textContent = 'Ready to draw';
+    }
+    toast(`${name} is back in the pool`);
+    render();
+  }
+
+  $('loadBtn').onclick = () => {
+    const { out, dupes } = parseLines($('names').value);
+    if (!out.length) { toast('Paste at least one name'); return; }
+
+    const raw = $('prizeCount').value.trim();
+    let count = null;
+    if (raw) {
+      if (/^\d+$/.test(raw) && +raw > 0) count = +raw;
+      else { toast('Number of prizes must be a positive whole number'); return; }
+    }
+
+    entrants = out;
+    prizeNames = parseLines($('prizes').value).out;
+    prizeCount = count;
+
+    const excludedNow = entrants.filter(n => excluded.has(key(n))).length;
+    const total = totalPrizes();
+    $('status').textContent =
+      `Loaded ${out.length} name${out.length === 1 ? '' : 's'}` +
+      (dupes ? `, skipped ${dupes} duplicate${dupes === 1 ? '' : 's'}` : '') +
+      (excludedNow ? `, ${excludedNow} already drawn/excluded` : '') +
+      (isFinite(total) ? `. ${total} prize${total === 1 ? '' : 's'} total.` : '. No prize limit.');
+
+    lastWinner = null; $('absentBtn').hidden = true;
+    $('display').className = ''; $('display').textContent = 'Ready to draw';
+    render();
+  };
+
+  $('clearBtn').onclick = () => {
+    $('names').value = ''; $('prizes').value = ''; $('prizeCount').value = '';
+  };
+
+  function draw() {
+    if (drawing) return;
+    const total = totalPrizes();
+    if (isFinite(total) && winners.length >= total) { toast('All prizes awarded'); return; }
+    const pool = eligible();
+    if (!pool.length) { toast('No eligible entrants left'); return; }
+
+    drawing = true; lastWinner = null;
+    $('absentBtn').hidden = true;
+    const d = $('display'); d.className = 'shuffling';
+    $('sub').textContent = 'Drawing\u2026';
+    $('ring').classList.add('on');
+    render();
+
+    // Winner is decided up front (unbiased); the shuffle is cosmetic.
+    const winner = pool[rand(pool.length)];
+    const start = performance.now(); let last = 0;
+
+    function tick(t) {
+      const elapsed = t - start, p = Math.min(elapsed / DRAW_MS, 1);
+      $('count').textContent = p < 1 ? Math.ceil((DRAW_MS - elapsed) / 1000) : '';
+      $('arc').style.strokeDashoffset = C * p;
+      const interval = reduced ? 1000 : 50 + 380 * p * p; // slow toward the end
+      if (t - last > interval) { last = t; d.textContent = pool[rand(pool.length)]; }
+      if (p < 1) requestAnimationFrame(tick); else reveal(winner);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function reveal(name) {
+    const prize = prizeNameFor(winners.length);
+    winners.push(name);
+    excluded.add(key(name));
+    lastWinner = name;
+    drawing = false;
+    $('ring').classList.remove('on');
+    const d = $('display'); d.className = ''; void d.offsetWidth; d.className = 'win';
+    d.textContent = name;
+    $('sub').textContent = prize ? `wins ${prize}!` : 'Congratulations!';
+    $('absentBtn').hidden = false;
+    $('absentBtn').textContent = 'Not here';
+    confetti();
+    render();
+  }
+
+  // Not here: exclude the winner, return their prize, wait for a manual redraw.
+  $('absentBtn').onclick = () => {
+    if (!lastWinner || drawing) return;
+    const i = winners.lastIndexOf(lastWinner);
+    if (i > -1) winners.splice(i, 1); // prize returns via position-based derivation
+    absent.push(lastWinner);          // stays excluded from the pool
+    toast(`${lastWinner} marked not present \u2014 click Draw winner to redraw`);
+    lastWinner = null;
+    $('absentBtn').hidden = true;
+    $('display').className = ''; $('display').textContent = 'Redraw needed';
+    $('sub').textContent = 'Prize returned. Click \u201CDraw winner\u201D to redraw it.';
+    render();
+  };
+
+  $('drawBtn').onclick = draw;
+
+  document.addEventListener('keydown', e => {
+    const tag = document.activeElement.tagName;
+    if (e.code === 'Space' && tag !== 'TEXTAREA' && tag !== 'INPUT' && tag !== 'BUTTON') {
+      e.preventDefault(); if (!$('drawBtn').disabled) draw();
+    }
+  });
+
+  $('copyBtn').onclick = async () => {
+    if (!winners.length) { toast('No winners yet'); return; }
+    const text = winners.map((name, i) => {
+      const prize = prizeNameFor(i);
+      return `${i + 1}. ${name}${prize ? ' - ' + prize : ''}`;
+    }).join('\n');
+    try { await navigator.clipboard.writeText(text); toast('Winners copied'); }
+    catch {
+      const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+      ta.select(); try { document.execCommand('copy'); toast('Winners copied'); } catch { toast('Copy failed'); }
+      ta.remove();
+    }
+  };
+
+  $('resetBtn').onclick = () => {
+    if (drawing) { toast('Wait for the draw to finish'); return; }
+    if (!confirm('Reset everything? This clears entrants, prizes, winners and the not-present list.')) return;
+    entrants = []; prizeNames = []; prizeCount = null; winners = []; absent = [];
+    excluded.clear(); lastWinner = null;
+    $('names').value = ''; $('prizes').value = ''; $('prizeCount').value = ''; $('status').textContent = '';
+    $('absentBtn').hidden = true;
+    $('display').className = ''; $('display').textContent = 'Ready to draw';
+    render();
+  };
+
+  $('fsBtn').onclick = () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen?.().catch(() => toast('Fullscreen not available here'));
+  };
+
+  // Warn before leaving if there is unsaved in-memory data.
+  window.addEventListener('beforeunload', e => {
+    if (winners.length || entrants.length || absent.length) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  // Confetti (skipped when reduced motion is preferred).
+  const cv = $('fx'), cx = cv.getContext('2d'); let parts = [], raf = null;
+  function confetti() {
+    if (reduced) return;
+    const r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+    cv.width = r.width * dpr; cv.height = r.height * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const colors = ['#2f7cf6', '#8a5cf6', '#16c79a', '#f5a524', '#ef4b5b', '#ffffff'];
+    for (let i = 0; i < 180; i++) parts.push({
+      x: r.width / 2, y: r.height / 2, vx: (Math.random() - .5) * 16, vy: Math.random() * -14 - 4,
+      s: Math.random() * 7 + 4, c: colors[i % colors.length], a: Math.random() * 6, va: (Math.random() - .5) * .3, life: 0
+    });
+    if (!raf) loop(r.width, r.height);
+  }
+  function loop(w, h) {
+    cx.clearRect(0, 0, w, h);
+    parts = parts.filter(p => p.y < h + 20 && p.life < 240);
+    for (const p of parts) {
+      p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va; p.life++;
+      cx.save(); cx.translate(p.x, p.y); cx.rotate(p.a); cx.fillStyle = p.c;
+      cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); cx.restore();
+    }
+    raf = parts.length ? requestAnimationFrame(() => loop(w, h)) : (cx.clearRect(0, 0, w, h), null);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
