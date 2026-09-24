@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>M365 Community Events Raffle</title>
 <style>
-:root{--bg:#1b1a19;--panel:#262523;--line:#3a3937;--txt:#f3f2f1;--mut:#a6a3a0;--a:#2886de;--b:#0f6cbd;--c:#038387;--warn:#ffb900;--red:#d13438;--field:#201f1e;--btn:#33312e;--btnH:#403e3a}
+:root{--bg:#1c1826;--panel:#272134;--line:#39324a;--txt:#f6f1ea;--mut:#aa9fb5;--a:#ff7a59;--b:#ff9d4d;--c:#2dd4bf;--warn:#fbbf24;--red:#ef5350;--field:#221c30;--btn:#332b45;--btnH:#40364f}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--txt);height:100vh;display:flex;flex-direction:column;overflow:hidden;
-  background:radial-gradient(1100px 620px at 92% -20%,#2886de14,transparent),var(--bg)}
+  background:radial-gradient(1100px 620px at 90% -18%,#ff7a5921,transparent),radial-gradient(820px 520px at -8% 112%,#2dd4bf14,transparent),var(--bg)}
 header{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 28px;border-bottom:1px solid var(--line)}
-.notice{flex:none;display:flex;align-items:center;gap:8px;padding:8px 28px;font-size:13px;color:var(--warn);background:#2a2620;border-bottom:1px solid var(--line)}
+.notice{flex:none;display:flex;align-items:center;gap:8px;padding:8px 28px;font-size:13px;color:var(--warn);background:#2c2333;border-bottom:1px solid var(--line)}
 .notice b{color:var(--txt)}
 .brand{font-weight:800;font-size:24px;letter-spacing:.3px}
 .brand span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -34,7 +34,7 @@ button:active:not(:disabled){transform:scale(.97)}
 button:disabled{opacity:.45;cursor:not-allowed}
 .primary{background:linear-gradient(90deg,var(--a),var(--b));border:0}
 .primary:hover:not(:disabled){filter:brightness(1.1);background:linear-gradient(90deg,var(--a),var(--b))}
-.danger{color:#f1707a;border-color:#6e2b2e}
+.danger{color:#f7a08f;border-color:#6e372b}
 .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .status{font-size:13px;color:var(--mut);margin-top:10px;min-height:1.2em}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
@@ -49,12 +49,12 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .ring.on{opacity:1}
 .ring svg{transform:rotate(-90deg)}
 .ring circle{fill:none;stroke-width:8}
-.ring .track{stroke:#3a3937}
+.ring .track{stroke:#39324a}
 .ring #arc{stroke:url(#grad);stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:0}
 #count{position:absolute;inset:0;display:grid;place-items:center;font-size:40px;font-weight:800}
 #display{font-size:clamp(40px,7vw,104px);font-weight:800;line-height:1.1;max-width:95%;word-break:break-word;min-height:1.2em;padding:0 10px}
 #display.shuffling{color:var(--mut)}
-#display.win{background:linear-gradient(90deg,#ffffff,#bcd9f5);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+#display.win{background:linear-gradient(90deg,#ffffff,#ffd9c2);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
 @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
 #sub{color:var(--mut);font-size:15px;min-height:1.3em}
 .big{font-size:22px;padding:16px 38px;border-radius:14px}
@@ -120,7 +120,7 @@ ol,ul{margin:0;padding:0;list-style:none}
       <div class="prize-now" id="prizeNow"></div>
       <div class="ring" id="ring" aria-hidden="true">
         <svg width="110" height="110" viewBox="0 0 120 120">
-          <defs><linearGradient id="grad"><stop offset="0" stop-color="#2886de"/><stop offset="1" stop-color="#0f6cbd"/></linearGradient></defs>
+          <defs><linearGradient id="grad"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#ff9d4d"/></linearGradient></defs>
           <circle class="track" cx="60" cy="60" r="52"/><circle id="arc" cx="60" cy="60" r="52"/>
         </svg>
         <div id="count"></div>
@@ -426,7 +426,7 @@ ol,ul{margin:0;padding:0;list-style:none}
     if (reduced) return;
     const r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
     cv.width = r.width * dpr; cv.height = r.height * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const colors = ['#2886de', '#038387', '#ffb900', '#d13438', '#6bb700', '#ffffff'];
+    const colors = ['#ff7a59', '#ff9d4d', '#2dd4bf', '#fbbf24', '#ef5350', '#ffffff'];
     for (let i = 0; i < 180; i++) parts.push({
       x: r.width / 2, y: r.height / 2, vx: (Math.random() - .5) * 16, vy: Math.random() * -14 - 4,
       s: Math.random() * 7 + 4, c: colors[i % colors.length], a: Math.random() * 6, va: (Math.random() - .5) * .3, life: 0
