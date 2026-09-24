@@ -166,6 +166,7 @@ ol,ul{margin:0;padding:0;list-style:none}
   const PARTY = '\uD83C\uDF89';
 
   // ── Language settings — edit these to configure ──────────────────────────
+  const SHOW_LANGUAGE_PICKER = false;  // true = show the language dropdown
   const AUTO_DETECT_LANGUAGE = true;   // false = always start in English
   const DEFAULT_LANG = 'en';
   // Languages offered in the picker (order preserved). Trim to limit choices.
@@ -582,6 +583,7 @@ ol,ul{margin:0;padding:0;list-style:none}
 
   function initLang() {
     const sel = $('langSel');
+    if (!SHOW_LANGUAGE_PICKER) { sel.hidden = true; curLang = DEFAULT_LANG; return; }
     sel.innerHTML = '';
     ENABLED_LANGUAGES.forEach(code => { if (!I18N[code]) return; const o = document.createElement('option'); o.value = code; o.textContent = LANG_NAMES[code] || code; sel.appendChild(o); });
     curLang = detectLang();
